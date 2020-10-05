@@ -66,12 +66,7 @@ public class Controller extends HttpServlet {
         
 
 
-        response.setContentType("text/html");
 
-        UserRegForm user = new UserRegForm();
-        user.setAge(20);
-        user.setName(request.getParameter("username"));
-        user.setPassword(request.getParameter("password"));
 
 //        Connection con = null;
 //        PreparedStatement ps = null;
@@ -104,12 +99,7 @@ public class Controller extends HttpServlet {
 
 
 
-        request.setAttribute("user", user);
 
-
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
-
-        requestDispatcher.forward(request, response);
 
 
     }

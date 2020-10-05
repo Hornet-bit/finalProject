@@ -1,7 +1,6 @@
 package by.epamtc.birukov.controller.command;
 
-import by.epamtc.birukov.controller.command.impl.CreateNewUserCommand;
-import by.epamtc.birukov.controller.command.impl.LoginCommand;
+import by.epamtc.birukov.controller.command.impl.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +11,9 @@ public class CommandProvider {
     public CommandProvider(){
         commands.put(ParametrName.CREATE_NEW_USER, new CreateNewUserCommand());
         commands.put(ParametrName.LOGINATION, new LoginCommand());
+        commands.put(ParametrName.GREETING, new GreetingPageCommand());
+        commands.put(ParametrName.GO_TO_LOGIN, new GoToLoginCommand());
+        commands.put(ParametrName.GO_TO_REGISTRATION, new GoToRegistrationCommand());
     }
 
     public Command getCommand(String commandName){

@@ -7,7 +7,8 @@
 
 <body>
 
-<c:redirect url="controller?command=go_to_main_page"></c:redirect>
+<%--<c:redirect url="WEB-INF/jsp/greeting.jsp"></c:redirect>--%>
+<c:redirect url="controller?command=greeting"></c:redirect>
 
 </body>
 </html>

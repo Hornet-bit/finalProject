@@ -4,7 +4,7 @@
     <title>Title</title>
 </head>
 <body>
-<form action="registration" name="regForm" method="get">
+<form action="controller" name="regForm" method="get">
     <input type="hidden" name="command" value="create_new_user">
     <p>
         <input type="text" name="username" autocomplete="off" placeholder="name" required>
