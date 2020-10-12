@@ -15,9 +15,7 @@ pass:  <jsp:getProperty name="user" property="password"/>
 <i>
 <jsp:getProperty name="user" property="age"/>
 </i>
-<%--<h2>--%>
-<%--<jsp:getProperty name="user" property="name"/>--%>
-<%--</h2>--%>
+
 <form action="index.jsp" method="get">
     <input type="submit" value="на главную">
 </form>

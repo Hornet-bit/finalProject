@@ -10,7 +10,7 @@ public class CommandProvider {
 
     public CommandProvider(){
         commands.put(ParametrName.CREATE_NEW_USER, new CreateNewUserCommand());
-        commands.put(ParametrName.LOGINATION, new LoginCommand());
+        commands.put(ParametrName.LOGINATION, new AuthenticationCommand());
         commands.put(ParametrName.GREETING, new GreetingPageCommand());
         commands.put(ParametrName.GO_TO_LOGIN, new GoToLoginCommand());
         commands.put(ParametrName.GO_TO_REGISTRATION, new GoToRegistrationCommand());
