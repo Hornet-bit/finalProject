@@ -19,12 +19,10 @@ public class Controller extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
 
         process(request, response);
-        System.out.println("doPost");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         process(request, response);
-        System.out.println("doGet");
     }
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

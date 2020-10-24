@@ -10,11 +10,12 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class AuthenticationCommand implements Command {
 
-    private static final String  PARAMETER_LOGIN = "login";
+    private static final String  PARAMETER_LOGIN = "username";
     private static final String  PARAMETER_PASSWORD = "password";
 
     private static final String LOGIN_PAGE = "/WEB-INF/jsp/logination.jsp";
@@ -32,6 +33,8 @@ public class AuthenticationCommand implements Command {
 
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
         ClientService clientService = serviceProvider.getClientService();
+
+
 ///////////////работа с сессией
 
         User user = null;
@@ -45,9 +48,13 @@ public class AuthenticationCommand implements Command {
                 request.setAttribute("error", "wrong login or password");
                 page = LOGIN_PAGE;
 
+
             } else {
                 request.setAttribute("user", user);
                 page = HELLO_PAGE;
+                HttpSession session = request.getSession();
+                session.setAttribute("login", user.getUsername());
+                session.setAttribute("role", user.getRole());
             }
         } catch (ServiceException e){
             page = ERROR_PAGE;

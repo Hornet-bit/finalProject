@@ -9,7 +9,15 @@ public class User {
     private String name;
     private String surname;
     private String middleName;
+    private String role;
 
+
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    //todo добавить дату рождения
     public User() {
     }
 
@@ -37,7 +45,7 @@ public class User {
         this.middleName = middleName;
     }
 
-    private int role;
+
 
     public String getEmail() {
         return email;
@@ -63,12 +71,9 @@ public class User {
         this.username = username;
     }
 
-    public int getRole() {
-        return role;
-    }
 
-    public void setRole(int role) {
-        this.role = role;
+    public String getRole() {
+        return role;
     }
 
     @Override
@@ -82,12 +87,13 @@ public class User {
                 Objects.equals(username, user.username) &&
                 Objects.equals(name, user.name) &&
                 Objects.equals(surname, user.surname) &&
-                Objects.equals(middleName, user.middleName);
+                Objects.equals(middleName, user.middleName) &&
+                Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, password, username, name, surname, middleName, role);
+        return Objects.hash(email, password, username, name, surname, middleName, role, role);
     }
 
     @Override

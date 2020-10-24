@@ -7,13 +7,13 @@
 <body>
 <jsp:useBean id="user" class="by.epamtc.birukov.entity.UserRegForm" scope="request"/>
 <h1>
-    Hello <jsp:getProperty name="user" property="name"/>
+    Hello <jsp:getProperty name="user" property="username"/>
 </h1>
 pass:  <jsp:getProperty name="user" property="password"/>
 
-
+<p></p>
 <i>
-<jsp:getProperty name="user" property="age"/>
+<jsp:getProperty name="user" property="email"/>
 </i>
 
 <form action="index.jsp" method="get">

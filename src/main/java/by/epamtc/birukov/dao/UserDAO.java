@@ -9,6 +9,8 @@ public interface UserDAO {
 
     boolean registration(UserRegForm user) throws DAOException;
 
+    User authorization(String login) throws DAOException;
+
 
 
 }

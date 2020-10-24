@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class UserRegForm implements Serializable {
 
-    private String name;
+    private String username;
     private String password;
     private String email;
 
@@ -28,12 +28,12 @@ public class UserRegForm implements Serializable {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -41,20 +41,20 @@ public class UserRegForm implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserRegForm that = (UserRegForm) o;
-        return Objects.equals(name, that.name) &&
+        return Objects.equals(username, that.username) &&
                 Objects.equals(password, that.password) &&
                 Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, password, email);
+        return Objects.hash(username, password, email);
     }
 
     @Override
     public String toString() {
         return "UserRegForm{" +
-                "name='" + name + '\'' +
+                "name='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';

@@ -12,7 +12,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 public class ConnectionPool {
 
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://127.0.0.1/test_system";//todo Duplicate key name 'quest_ans_idx'
+    private static final String URL = "jdbc:mysql://127.0.0.1/testing";
     private static final String URL_PARAMS = "?useSSL=false&serverTimezone=UTC&useUnicode=true";
     private static final String USER = "root";
     private static final String PASSWORD = "minimal16";
@@ -34,6 +34,14 @@ public class ConnectionPool {
 
     private ConnectionPool() {
 
+        try {
+
+
+            initPoolConnection();
+        } catch (DAOException e){
+            e.printStackTrace();
+            //todo log
+        }
     }
 
     public Connection getConnection() throws DAOException {

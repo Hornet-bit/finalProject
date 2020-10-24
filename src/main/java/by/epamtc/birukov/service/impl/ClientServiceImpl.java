@@ -35,8 +35,12 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public boolean registration(UserRegForm user) throws ServiceException {
+
+        //todo проверка параметров валидатором
         DAOProvider daoProvider = DAOProvider.getInstance();
         UserDAO userDAO = daoProvider.getUserDAO();
+
+
 
         try {
             return userDAO.registration(user);
@@ -44,5 +48,22 @@ public class ClientServiceImpl implements ClientService {
             throw new ServiceException(e);
         }
 
+    }
+
+    @Override
+    public User getSettings(String login) throws ServiceException {
+
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        UserDAO userDAO = daoProvider.getUserDAO();
+        User user;
+        try {
+            user = new User();
+            user = userDAO.authorization(login);
+
+        } catch (DAOException e){
+            e.printStackTrace();
+            throw new ServiceException(e);
+        }
+        return user;
     }
 }

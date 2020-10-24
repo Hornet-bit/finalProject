@@ -9,4 +9,6 @@ public interface ClientService {
 
     boolean registration(UserRegForm user) throws ServiceException;
 
+    User getSettings(String login) throws ServiceException;
+
 }

@@ -7,7 +7,11 @@
 <form action="controller" name="regForm" method="get">
     <input type="hidden" name="command" value="create_new_user">
     <p>
-        <input type="text" name="username" autocomplete="off" placeholder="name" required>
+        <input type="text" name="email" autocomplete="off" placeholder="email" required>
+    </p>
+
+    <p>
+        <input type="text" name="username" autocomplete="off" placeholder="nickname" required>
     </p>
     <p>
         <input type="password" name="password" autocomplete="off" placeholder="password" required>

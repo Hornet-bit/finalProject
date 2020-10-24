@@ -10,10 +10,14 @@ public class CommandProvider {
 
     public CommandProvider(){
         commands.put(ParametrName.CREATE_NEW_USER, new CreateNewUserCommand());
-        commands.put(ParametrName.LOGINATION, new AuthenticationCommand());
+        commands.put(ParametrName.AUTHORIZATION, new AuthenticationCommand());
         commands.put(ParametrName.GREETING, new GreetingPageCommand());
         commands.put(ParametrName.GO_TO_LOGIN, new GoToLoginCommand());
         commands.put(ParametrName.GO_TO_REGISTRATION, new GoToRegistrationCommand());
+        commands.put(ParametrName.GO_TO_SETTINGS, new GoToSettingsCommand());
+        commands.put(ParametrName.GO_TO_CREATE_TEST, new GoToCreateTestCommand());
+        commands.put(ParametrName.CREATE_QUESTION, new CreateQuestionCommand());
+        commands.put(ParametrName.CREATE_TEST, new CreateTestCommand());
     }
 
     public Command getCommand(String commandName){
