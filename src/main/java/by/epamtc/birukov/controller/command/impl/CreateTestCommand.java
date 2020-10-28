@@ -14,8 +14,20 @@ public class CreateTestCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String count = request.getParameter("count_of_question");
-        request.setAttribute("count", count);
+//        String count = request.getParameter("count_of_question");
+//        request.setAttribute("count", count);
+        System.out.println(request.getParameter("question1"));
+        System.out.println(request.getParameter("answer1"));
+        System.out.println(request.getParameter("answer2"));
+        System.out.println(request.getParameter("answer3"));
+        System.out.println(request.getParameter("answer4"));
+        System.out.println(request.getParameter("answer5"));
+        System.out.println(request.getParameter("answer6"));
+        System.out.println(request.getParameter("answer7"));
+        System.out.println(request.getParameter("answer8"));
+
+
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(FILING_QUESTIONS);
         dispatcher.forward(request, response);
     }
