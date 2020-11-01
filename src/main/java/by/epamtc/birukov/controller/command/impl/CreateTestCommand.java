@@ -20,11 +20,11 @@ public class CreateTestCommand implements Command {
         System.out.println(request.getParameter("answer1"));
         System.out.println(request.getParameter("answer2"));
         System.out.println(request.getParameter("answer3"));
-        System.out.println(request.getParameter("answer4"));
-        System.out.println(request.getParameter("answer5"));
-        System.out.println(request.getParameter("answer6"));
-        System.out.println(request.getParameter("answer7"));
-        System.out.println(request.getParameter("answer8"));
+
+
+        System.out.println("Questions = "+request.getParameter("count"));
+
+
 
 
 
