@@ -10,7 +10,6 @@ public class ServiceProvider {
     }
 
     public ServiceProvider() {
-
     }
 
     private final ClientService serviceProvider = new ClientServiceImpl();

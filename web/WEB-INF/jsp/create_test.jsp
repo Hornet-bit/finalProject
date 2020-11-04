@@ -13,15 +13,15 @@
 
     function addInput() {
         if (x < 10) {
-
+//попробую удалить все х+1
 
             var str = '<fieldset id="fld' + x + '">' +
-                '<input type="text" id="id_question' + (x + 1) + '" name="question' + (x) + '" placeholder="Вопрос" autocomplete="off">  ' +
-                '<input type="text" id="id_answer' + (ans) + '" name="q' + (x + 1) + 'a' + (ans) + '" placeholder="name" autocomplete="off">' +
-                '<input type="checkbox" name="check' + ans + '">' +
-                '<button type="button" name="button' + (x + 1) + '" id="' + (x + 1) + '" onclick="createAnswer(id) ">Добавить вариант ответа</button>' +
-                '<input type="hidden" id="id_free_q' + (x + 1) + '" name="free_q' + (x + 1) + '" value="1">' +
-                '<p></p><button type="button" id="bt' + (x + 1) + '" onclick="delete_elem(id)">Удалить вопрос</button>' +
+                '<input type="text" id="id_question' + (x) + '" name="question' + (x) + '" placeholder="Вопрос'+x+'" autocomplete="off">  ' +
+                '<input type="text" id="id_answer' + (ans) + '" name="q' + (x) + 'a' + (ans) + '" placeholder="name" autocomplete="off">' +
+                '<input type="checkbox" name="cq'+x+'a'+ans+'">' +
+                '<button type="button" name="button' + (x) + '" id="' + (x) + '" onclick="createAnswer(id) ">Добавить вариант ответа</button>' +
+                '<input type="hidden" id="id_free_q' + (x) + '" name="free_q' + (x) + '" value="1">' +
+                '<p></p><button type="button" id="bt' + (x) + '" onclick="delete_elem(id)">Удалить вопрос</button>' +
                 '</fieldset>' +
                 '<div id="input' + (x + 1) + '"></div>';
 
@@ -88,9 +88,7 @@
 
 <form action="controller">
 
-
     <div id="input0"></div>
-
     <fieldset>
         <button type="button" class="add" onclick="addInput()">Добавить вопрос</button>
     </fieldset>
