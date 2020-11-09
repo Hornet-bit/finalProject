@@ -12,7 +12,8 @@ import java.sql.SQLException;
 public class SQLTestDAO implements TestDAO {
 
     private static final ConnectionPool pool = ConnectionPool.getInstance();
-    private static final String GET_ID_TEST = "SELECT id FROM questions WHERE name = ?";
+    private static final String GET_ID_TEST = "SELECT id_test FROM tests WHERE name = ?";
+//    private static final String GET_ID_TEST = "SELECT id FROM questions WHERE name = ?";
     private static final String GET_ID_QUESTION = "SELECT id_test FROM tests WHERE name = ?";
     @Override
     public void createTest(Test test) throws DAOException {
