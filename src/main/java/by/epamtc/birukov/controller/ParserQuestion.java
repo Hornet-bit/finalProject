@@ -46,13 +46,20 @@ public class ParserQuestion {
 
     private Question addAnswerToQuestion(HttpServletRequest request, int questionNum, Question question) {
         //todo вынести magic в константы
-
+//todo ограничить количество
         for (int j = 0; j < 6; j++) {
             String paramNameAnswer = NAME_QUESTION_IN_REQUEST + questionNum + NAME_ANSWER_IN_REQUEST + j;
             String isAnswerTrue = NAME_CHECKBOX_IN_REQUEST + paramNameAnswer;
 
             Answer answer = new Answer();
             String valueAnswer = request.getParameter(paramNameAnswer);
+
+            if (valueAnswer == null) {
+                break;
+            }
+
+            //поля после значения null не будут обработаны
+            question.setCountOfAnswer(j);
             boolean rightAnswer;
 
             if (request.getParameter(isAnswerTrue) != null) {

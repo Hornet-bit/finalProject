@@ -4,16 +4,12 @@ import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.dao.TestDAO;
 import by.epamtc.birukov.entity.Test;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class SQLTestDAO implements TestDAO {
 
     private static final ConnectionPool pool = ConnectionPool.getInstance();
     private static final String GET_ID_TEST = "SELECT id_test FROM tests WHERE name = ?";
-//    private static final String GET_ID_TEST = "SELECT id FROM questions WHERE name = ?";
     private static final String GET_ID_QUESTION = "SELECT id_test FROM tests WHERE name = ?";
     @Override
     public void createTest(Test test) throws DAOException {
@@ -55,6 +51,7 @@ public class SQLTestDAO implements TestDAO {
     private void addQuestionToTable(Test test, int idTest) throws DAOException {
 
         int question = 0;
+        int generatedIdQuestion = 0;
 
         try {
 
@@ -65,14 +62,19 @@ public class SQLTestDAO implements TestDAO {
                 String sql = "INSERT INTO questions (id_test, question) values (?, ?)";
 
 
-                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 //                preparedStatement.setString(1, test.getName());
                 preparedStatement.setInt(1, idTest);
                 preparedStatement.setString(2, test.getQuestion(question).getTextQuestion());
                 preparedStatement.executeUpdate();
 
-
-
+                ResultSet generatedKeys = null;
+                generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    System.out.println("Generated key in Questions = " + generatedKeys.getInt(1));
+                    generatedIdQuestion = generatedKeys.getInt(1);
+                }
+                addAnswerToTable(generatedIdQuestion, question ,test);
                 //вызов addAnswer()
 
                 question++;
@@ -82,10 +84,35 @@ public class SQLTestDAO implements TestDAO {
         }
     }
 
-    private void addAnswerToTable() throws DAOException {
-        Connection connection = null;
-        ResultSet resultSet = null;
-        connection = pool.getConnection();
+    private void addAnswerToTable(int idQuestion, int question ,Test test) throws DAOException {
+
+        int answer = 0;
+
+
+        while (answer <= test.getQuestion(question).getCountOfAnswer()) {//возм тут ошибка
+            Connection connection = null;
+            connection = pool.getConnection();
+
+            PreparedStatement preparedStatement = null;
+
+            String ADD_ANSWER = "INSERT INTO answers (content, result, id_q) values (?,?,?)";
+
+            try {
+
+                preparedStatement = connection.prepareStatement(ADD_ANSWER);
+
+                preparedStatement.setString(1, test.getQuestion(question).getAnswer(answer).getTextAnswer());
+                preparedStatement.setBoolean(2, test.getQuestion(question).getAnswer(answer).isRightAnswer());
+                preparedStatement.setInt(3, idQuestion);
+
+                preparedStatement.executeUpdate();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                //todo log
+            }
+            answer++;
+        }
 
     }
 

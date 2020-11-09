@@ -14,6 +14,14 @@ public class Question {
     private String textQuestion;
     private int countOfAnswer;
 
+    public int getCountOfAnswer() {
+        return countOfAnswer;
+    }
+
+    public void setCountOfAnswer(int countOfAnswer) {
+        this.countOfAnswer = countOfAnswer;
+    }
+
     public void setAnswer(Answer answer){
         answerList.add(answer);
     }
