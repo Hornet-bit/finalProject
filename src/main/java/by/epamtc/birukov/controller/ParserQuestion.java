@@ -16,20 +16,27 @@ public class ParserQuestion {
         int countOfQuestion = Integer.parseInt(request.getParameter("count"));
 
         Test test = new Test();
-        for (int i = 0; i < countOfQuestion; i++) {
+        test.setName(request.getParameter("test_name"));
+        test.setDescription(request.getParameter("test_description"));
 
-//            test.setQuestion();
+
+        for (int i = 0, k = 1; i < countOfQuestion; i++) {
+
             String nameQuestionParam = "question" + i;
             String valueQuestionParam = request.getParameter(nameQuestionParam);
 
             if (valueQuestionParam == null) {
                 continue;
             }
+
             Question question = new Question();
             question.setTextQuestion(valueQuestionParam);
             question = addAnswerToQuestion(request, i, question);
 
             test.setQuestion(question);
+
+            test.setCountOfQuestion(k);
+            k++;
 
 
         }

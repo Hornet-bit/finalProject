@@ -1,6 +1,7 @@
 package by.epamtc.birukov.service;
 
 import by.epamtc.birukov.service.impl.ClientServiceImpl;
+import by.epamtc.birukov.service.impl.CreateTestImpl;
 
 public class ServiceProvider {
 
@@ -12,11 +13,14 @@ public class ServiceProvider {
     public ServiceProvider() {
     }
 
-    private final ClientService serviceProvider = new ClientServiceImpl();
+    private final ClientService clientService = new ClientServiceImpl();
+    private final TestService testService = new CreateTestImpl();
 
     public ClientService getClientService(){
-        return serviceProvider;
+        return clientService;
     }
 
-
+    public TestService getTestService() {
+        return testService;
+    }
 }

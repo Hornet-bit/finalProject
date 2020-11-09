@@ -2,7 +2,10 @@ package by.epamtc.birukov.controller.command.impl;
 
 import by.epamtc.birukov.controller.ParserQuestion;
 import by.epamtc.birukov.controller.command.Command;
+import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.entity.Test;
+import by.epamtc.birukov.service.ServiceProvider;
+import by.epamtc.birukov.service.TestService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -32,16 +35,22 @@ public class CreateTestCommand implements Command {
         ParserQuestion parserQuestion = new ParserQuestion();
         test = parserQuestion.getTest(request);
 
-        System.out.println(test.getQuestion(0).getTextQuestion());
-        System.out.println(test.getQuestion(0).getAnswer(0).getTextAnswer());
-        System.out.println(test.getQuestion(0).getAnswer(1).getTextAnswer());
-        System.out.println(test.getQuestion(0).getAnswer(2).getTextAnswer());
-        System.out.println(test.getQuestion(0).getAnswer(3).getTextAnswer());
-        System.out.println(test.getQuestion(0).getAnswer(4).getTextAnswer());
-        System.out.println(test.getQuestion(0).getAnswer(5).getTextAnswer());
+        ServiceProvider serviceProvider = ServiceProvider.getInstance();
+        TestService testService = serviceProvider.getTestService();
 
-        System.out.println(test.getQuestion(0).getAnswer(0).isRightAnswer());
-        System.out.println(test.getQuestion(0).getAnswer(1).isRightAnswer());
+        try {
+
+
+            testService.createTest(test);
+        } catch (DAOException e){
+            e.printStackTrace();
+            //todo log
+        }
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/test_is_created.jsp");
+        requestDispatcher.forward(request, response);
+
+
 
 //        System.out.println(request.getParameter("image"));
 
@@ -52,16 +61,6 @@ public class CreateTestCommand implements Command {
 //        System.out.println(request.getParameter("cq0a2"));
 //        System.out.println(request.getParameter("cq0a3"));
 
-//        for (int i = 0; i < countOfQuestion; i++){
-//            System.out.println(request.getParameter("question"+i));
-//            System.out.println(request.getParameter("q"+i+"a0"));
-//            System.out.println(request.getParameter("q"+i+"a1"));
-//            System.out.println(request.getParameter("q"+i+"a2"));
-//            System.out.println(request.getParameter("q"+i+"a3"));
-//            System.out.println(request.getParameter("q"+i+"a4"));
-//            System.out.println(request.getParameter("q"+i+"a5"));
-//            System.out.println("-----------");
-//        }
 
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(FILING_QUESTIONS);

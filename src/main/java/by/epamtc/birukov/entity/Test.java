@@ -13,7 +13,15 @@ public class Test {
     private String name;
     private String description;
     private int resultTest;
+    private int countOfQuestion;
 
+    public int getCountOfQuestion() {
+        return countOfQuestion;
+    }
+
+    public void setCountOfQuestion(int countOfQuestion) {
+        this.countOfQuestion = countOfQuestion;
+    }
 
     public void setQuestion(Question question){
         questionList.add(question);

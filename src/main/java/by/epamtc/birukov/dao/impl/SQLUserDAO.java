@@ -5,7 +5,7 @@ import by.epamtc.birukov.dao.UserDAO;
 import by.epamtc.birukov.entity.User;
 import by.epamtc.birukov.entity.UserRegForm;
 
-import javax.servlet.http.HttpSession;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -88,7 +88,7 @@ public class SQLUserDAO implements UserDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            //todo log
+            //todo log, выкинуть ДАОExep
         }
 
         return true;

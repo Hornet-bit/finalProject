@@ -2,6 +2,7 @@ package by.epamtc.birukov.controller;
 
 import by.epamtc.birukov.controller.command.Command;
 import by.epamtc.birukov.controller.command.CommandProvider;
+import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.entity.UserRegForm;
 
 import javax.naming.InitialContext;
@@ -37,8 +38,14 @@ public class Controller extends HttpServlet {
         Command command;
 
         command = provider.getCommand(currentCommandName);
-        command.execute(request, response);
+        try {
 
+
+            command.execute(request, response);
+        } catch (DAOException e){
+            e.printStackTrace();
+            //todo log
+        }
 
     }
 

@@ -88,6 +88,8 @@
 
 <form action="controller">
 
+    <input type="text" name="test_name" placeholder="имя теста">
+    <input type="text" name="test_description" placeholder="описание теста">
     <div id="input0"></div>
     <fieldset>
         <button type="button" class="add" onclick="addInput()">Добавить вопрос</button>
