@@ -29,8 +29,8 @@
     <input type="submit" value="en">
 </form>
 
-<form action="controller" name="go_to_settings" method="get">
-    <input type="submit" value="settings">
-</form>
+<%--<form action="controller" name="go_to_settings" method="get">--%>
+<%--    <input type="submit" value="settings">--%>
+<%--</form>--%>
 </body>
 </html>

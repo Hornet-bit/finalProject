@@ -1,6 +1,9 @@
 package by.epamtc.birukov.dao;
 
+import by.epamtc.birukov.entity.BasicDescriptionTest;
 import by.epamtc.birukov.entity.Test;
+
+import java.util.List;
 
 public interface TestDAO {
 
@@ -11,5 +14,10 @@ public interface TestDAO {
 
     void deleteTest();
 
+    void showTestWithAnswer() throws DAOException;
+
+    List<BasicDescriptionTest> showAllTestsName() throws DAOException;
+
+    Test showTestById(int id);
 
 }

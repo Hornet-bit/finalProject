@@ -15,3 +15,8 @@
     <input type="submit" value="Create subject">
 </form>
 
+<form action="controller" method="get">
+    <input type="hidden" name="command" value="show_all_tests">
+    <input type="submit" value="показать все тесты">
+</form>
+

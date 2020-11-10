@@ -18,6 +18,8 @@ public class CommandProvider {
         commands.put(ParametrName.GO_TO_CREATE_TEST, new GoToCreateTestCommand());
         commands.put(ParametrName.CREATE_QUESTION, new CreateQuestionCommand());
         commands.put(ParametrName.CREATE_TEST, new CreateTestCommand());
+        commands.put(ParametrName.SHOW_ALL_TESTS, new ShowAllTestsCommand());
+        commands.put(ParametrName.SHOW_TEST_BY_NAME, new ShowTestByNameCommand());
     }
 
     public Command getCommand(String commandName){

@@ -2,15 +2,18 @@ package by.epamtc.birukov.dao.impl;
 
 import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.dao.TestDAO;
+import by.epamtc.birukov.entity.BasicDescriptionTest;
 import by.epamtc.birukov.entity.Test;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQLTestDAO implements TestDAO {
 
     private static final ConnectionPool pool = ConnectionPool.getInstance();
     private static final String GET_ID_TEST = "SELECT id_test FROM tests WHERE name = ?";
-    private static final String GET_ID_QUESTION = "SELECT id_test FROM tests WHERE name = ?";
+
     @Override
     public void createTest(Test test) throws DAOException {
         Connection connection = null;
@@ -63,7 +66,6 @@ public class SQLTestDAO implements TestDAO {
 
 
                 preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-//                preparedStatement.setString(1, test.getName());
                 preparedStatement.setInt(1, idTest);
                 preparedStatement.setString(2, test.getQuestion(question).getTextQuestion());
                 preparedStatement.executeUpdate();
@@ -71,7 +73,6 @@ public class SQLTestDAO implements TestDAO {
                 ResultSet generatedKeys = null;
                 generatedKeys = preparedStatement.getGeneratedKeys();
                 if (generatedKeys.next()) {
-                    System.out.println("Generated key in Questions = " + generatedKeys.getInt(1));
                     generatedIdQuestion = generatedKeys.getInt(1);
                 }
                 addAnswerToTable(generatedIdQuestion, question ,test);
@@ -124,5 +125,67 @@ public class SQLTestDAO implements TestDAO {
     @Override
     public void deleteTest() {
 
+    }
+
+    @Override
+    public void showTestWithAnswer() throws DAOException {
+
+        Connection connection = null;
+        connection = pool.getConnection();
+
+        PreparedStatement preparedStatement = null;
+
+        String sql = "SELECT name, description FROM tests WHERE id = ?";
+
+
+
+    }
+
+    @Override
+    public List<BasicDescriptionTest> showAllTestsName() throws DAOException {
+//todo при показе выводить описание тестов
+        Connection connection = null;
+        connection = pool.getConnection();
+        ResultSet resultSet = null;
+
+        PreparedStatement preparedStatement = null;
+
+
+        List<BasicDescriptionTest> listOfTests = new ArrayList<>();
+        String SHOW_ALL_TESTS = "SELECT name, description, id_test FROM tests";
+        try {
+
+            preparedStatement = connection.prepareStatement(SHOW_ALL_TESTS);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+
+                BasicDescriptionTest bDT = new BasicDescriptionTest();
+
+                bDT.setId(resultSet.getInt("id_test"));
+                bDT.setName(resultSet.getString("name"));
+                bDT.setDescription(resultSet.getString("description"));
+
+                listOfTests.add(bDT);
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            //todo log
+
+        }
+
+        return listOfTests;
+    }
+
+    @Override
+    public Test showTestById(int id) {
+
+        Test test = new Test();
+        String GET_TEST_BY_ID = "";
+
+
+        return test;
     }
 }
