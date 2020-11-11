@@ -12,8 +12,18 @@ public class Test {
 
     private String name;
     private String description;
+
     private int resultTest;
     private int countOfQuestion;
+    private int idTest;
+
+    public int getIdTest() {
+        return idTest;
+    }
+
+    public void setIdTest(int idTest) {
+        this.idTest = idTest;
+    }
 
     public int getCountOfQuestion() {
         return countOfQuestion;

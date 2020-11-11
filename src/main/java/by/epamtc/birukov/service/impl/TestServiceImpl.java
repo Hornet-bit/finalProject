@@ -34,7 +34,7 @@ public class TestServiceImpl implements TestService {
 
 
             listOfTests = sqlTestDAO.showAllTestsName();
-        } catch (DAOException e){
+        } catch (DAOException e) {
             e.printStackTrace();
         }
 
@@ -42,13 +42,14 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public Test showTestById(int id) {
+    public Test showTestById(int id) throws DAOException {
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         TestDAO sqlTestDAO = daoProvider.getTestDAO();
 
-        sqlTestDAO.showTestById(id);
+        Test test = new Test();
+        test = sqlTestDAO.showTestById(id);
 
-        return null;
+        return test;
     }
 }

@@ -13,5 +13,5 @@ public interface TestService {
 
     List<BasicDescriptionTest> showAllTests();
 
-    Test showTestById(int id);
+    Test showTestById(int id) throws DAOException;
 }

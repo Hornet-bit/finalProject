@@ -30,7 +30,7 @@ public class ConnectionPool {
     private BlockingQueue<Connection> freeConnection;
     private Queue<Connection> givenAwayConnection;
 
-    private static final int POOL_SIZE = 30;
+    private static final int POOL_SIZE = 40;
 
     private ConnectionPool() {
 

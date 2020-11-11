@@ -2,7 +2,9 @@ package by.epamtc.birukov.dao.impl;
 
 import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.dao.TestDAO;
+import by.epamtc.birukov.entity.Answer;
 import by.epamtc.birukov.entity.BasicDescriptionTest;
+import by.epamtc.birukov.entity.Question;
 import by.epamtc.birukov.entity.Test;
 
 import java.sql.*;
@@ -13,6 +15,9 @@ public class SQLTestDAO implements TestDAO {
 
     private static final ConnectionPool pool = ConnectionPool.getInstance();
     private static final String GET_ID_TEST = "SELECT id_test FROM tests WHERE name = ?";
+    private static final String GET_TESTPARAM_BY_ID = "SELECT id_test, name, description FROM tests AS t WHERE t.id_test = ?";
+    private final static String GET_QUESTION_FROM_TEST = "SELECT id, question, content FROM questions AS q WHERE q.id_test = ?";
+    private final static String GET_ANSWER_FROM_QUESTION = "SELECT id_ans, content, result FROM answers AS ans WHERE ans.id_q = ?";
 
     @Override
     public void createTest(Test test) throws DAOException {
@@ -22,6 +27,7 @@ public class SQLTestDAO implements TestDAO {
         int idTest = 0;
 
         connection = pool.getConnection();
+
 
         try {
             connection.setAutoCommit(false);
@@ -37,12 +43,15 @@ public class SQLTestDAO implements TestDAO {
             preparedStatement.setString(1, test.getName());
             resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 idTest = resultSet.getInt("id_test");
                 System.out.println(idTest);
             }
             connection.setAutoCommit(true);
             addQuestionToTable(test, idTest);
+
+
+            pool.releaseConnection(connection);
 
 
         } catch (SQLException e) {
@@ -55,13 +64,14 @@ public class SQLTestDAO implements TestDAO {
 
         int question = 0;
         int generatedIdQuestion = 0;
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        connection = pool.getConnection();
 
         try {
 
             while (question < test.getCountOfQuestion()) {
-                PreparedStatement preparedStatement = null;
-                Connection connection = null;
-                connection = pool.getConnection();
+
                 String sql = "INSERT INTO questions (id_test, question) values (?, ?)";
 
 
@@ -75,28 +85,31 @@ public class SQLTestDAO implements TestDAO {
                 if (generatedKeys.next()) {
                     generatedIdQuestion = generatedKeys.getInt(1);
                 }
-                addAnswerToTable(generatedIdQuestion, question ,test);
+                addAnswerToTable(generatedIdQuestion, question, test);
                 //вызов addAnswer()
 
                 question++;
             }
         } catch (SQLException e) {
             e.printStackTrace();//todo log
+        } finally {
+            pool.releaseConnection(connection);
         }
     }
 
-    private void addAnswerToTable(int idQuestion, int question ,Test test) throws DAOException {
+    private void addAnswerToTable(int idQuestion, int question, Test test) throws DAOException {
+
+        Connection connection = null;
+        connection = pool.getConnection();
+        PreparedStatement preparedStatement = null;
 
         int answer = 0;
 
 
         while (answer <= test.getQuestion(question).getCountOfAnswer()) {//возм тут ошибка
-            Connection connection = null;
-            connection = pool.getConnection();
 
-            PreparedStatement preparedStatement = null;
 
-            String ADD_ANSWER = "INSERT INTO answers (content, result, id_q) values (?,?,?)";
+            String ADD_ANSWER = "INSERT INTO answers (content, result, id_q) values (?,?,?)";//todo вынести в константы
 
             try {
 
@@ -111,6 +124,8 @@ public class SQLTestDAO implements TestDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
                 //todo log
+            } finally {
+                pool.releaseConnection(connection);
             }
             answer++;
         }
@@ -138,7 +153,6 @@ public class SQLTestDAO implements TestDAO {
         String sql = "SELECT name, description FROM tests WHERE id = ?";
 
 
-
     }
 
     @Override
@@ -159,7 +173,7 @@ public class SQLTestDAO implements TestDAO {
 
             resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
 
                 BasicDescriptionTest bDT = new BasicDescriptionTest();
 
@@ -170,22 +184,133 @@ public class SQLTestDAO implements TestDAO {
                 listOfTests.add(bDT);
             }
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             //todo log
-
+        } finally {
+            pool.releaseConnection(connection);
         }
 
         return listOfTests;
     }
 
     @Override
-    public Test showTestById(int id) {
+    public Test showTestById(int id) throws DAOException {
 
-        Test test = new Test();
-        String GET_TEST_BY_ID = "";
+        Test test;
+        test = takeTestInfoFromDB(id);
 
 
         return test;
     }
+
+
+    private Test takeTestInfoFromDB(int id) throws DAOException {
+
+        Connection connection = null;
+        connection = pool.getConnection();
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+
+        Test test = new Test();
+
+        try {
+
+            preparedStatement = connection.prepareStatement(GET_TESTPARAM_BY_ID);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                test.setName(resultSet.getString("name"));
+                test.setDescription(resultSet.getString("description"));
+                test.setIdTest(resultSet.getInt("id_test"));
+            }
+
+            takeQuestionFromDB(id, test);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //todo log
+        } finally {
+            pool.releaseConnection(connection);
+        }
+        //todo func
+
+        return test;
+    }
+
+
+    private void takeQuestionFromDB(int idTest, Test test) throws DAOException {
+
+        Connection connection = null;
+        connection = pool.getConnection();
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+
+
+        try {
+            preparedStatement = connection.prepareStatement(GET_QUESTION_FROM_TEST);
+            preparedStatement.setInt(1, idTest);
+            resultSet = preparedStatement.executeQuery();
+            int countOfQuestion = 0;
+            while (resultSet.next()) {
+
+
+                Question question = new Question();
+
+                question.setTextQuestion(resultSet.getString("question"));
+                question.setContent(resultSet.getString("content"));
+
+                int idQuestion = resultSet.getInt("id");
+                question.setId(idQuestion);
+
+                takeAnswerFromBD(idQuestion, question);
+                test.setQuestion(question);
+
+                countOfQuestion++;
+                test.setCountOfQuestion(countOfQuestion);
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            pool.releaseConnection(connection);
+        }
+
+    }
+
+    private Answer takeAnswerFromBD(int idQuestion, Question question) throws DAOException {
+
+        Connection connection = null;
+        connection = pool.getConnection();
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+        Answer answer = null;
+        try {
+
+            preparedStatement = connection.prepareStatement(GET_ANSWER_FROM_QUESTION);
+            preparedStatement.setInt(1, idQuestion);
+            resultSet = preparedStatement.executeQuery();
+            int countOfAnswer = 0;
+            while (resultSet.next()) {
+                countOfAnswer++;
+                answer = new Answer();
+                answer.setTextAnswer(resultSet.getString("content"));
+                answer.setRightAnswer(resultSet.getBoolean("result"));
+                answer.setId(resultSet.getInt("id_ans"));
+                question.setAnswer(answer);
+                question.setCountOfAnswer(countOfAnswer);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //todo log
+        } finally {
+            pool.releaseConnection(connection);
+        }
+
+        return answer;
+    }
+
 }

@@ -8,6 +8,16 @@ public class Answer {
     private String textAnswer;
     private boolean isRightAnswer;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    private int id;
+
     public String getTextAnswer() {
         return textAnswer;
     }

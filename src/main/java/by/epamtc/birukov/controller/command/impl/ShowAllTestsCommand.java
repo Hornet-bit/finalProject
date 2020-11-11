@@ -25,24 +25,7 @@ public class ShowAllTestsCommand implements Command {
         listOfQuestion = testService.showAllTests();
 
         request.setAttribute("all_tests", listOfQuestion);
-        //////////////////
-//        TempTestBasik tb1 = new TempTestBasik();
-//        tb1.setId(1);
-//        tb1.setDescription("Descr1");
-//        tb1.setName("Name1");
-//
-//        TempTestBasik tb2 = new TempTestBasik();
-//        tb2.setId(2);
-//        tb2.setDescription("Descr2");
-//        tb2.setName("Name2");
-//
-//        List<TempTestBasik> li = new ArrayList<>();
-//        li.add(tb1);
-//        li.add(tb2);
-//
-//        request.setAttribute("li", li);
 
-        ////////////////////
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/temp_show_tests.jsp");
         dispatcher.forward(request, response);

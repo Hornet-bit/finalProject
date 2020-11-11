@@ -18,6 +18,6 @@ public interface TestDAO {
 
     List<BasicDescriptionTest> showAllTestsName() throws DAOException;
 
-    Test showTestById(int id);
+    Test showTestById(int id) throws DAOException;
 
 }
