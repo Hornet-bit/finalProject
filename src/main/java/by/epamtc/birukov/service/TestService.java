@@ -3,6 +3,7 @@ package by.epamtc.birukov.service;
 import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.entity.BasicDescriptionTest;
 import by.epamtc.birukov.entity.Question;
+import by.epamtc.birukov.entity.RunTest;
 import by.epamtc.birukov.entity.Test;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface TestService {
     List<BasicDescriptionTest> showAllTests();
 
     Test showTestById(int id) throws DAOException;
+
+    void appointTest(RunTest runTest) throws DAOException;
 }

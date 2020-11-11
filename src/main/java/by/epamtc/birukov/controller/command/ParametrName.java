@@ -13,5 +13,8 @@ public enum ParametrName {
     CREATE_TEST,
     CREATE_QUESTION,
     SHOW_ALL_TESTS,
-    SHOW_TEST_BY_NAME
+    SHOW_TEST_BY_NAME,
+    SHOW_ALL_USERS,
+    GO_TO_APPOINT_TEST,
+    APPOINT_TEST
 }

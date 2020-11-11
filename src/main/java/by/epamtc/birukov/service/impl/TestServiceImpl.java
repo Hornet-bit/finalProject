@@ -3,8 +3,10 @@ package by.epamtc.birukov.service.impl;
 import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.dao.DAOProvider;
 import by.epamtc.birukov.dao.TestDAO;
+import by.epamtc.birukov.dao.impl.SQLTestDAO;
 import by.epamtc.birukov.entity.BasicDescriptionTest;
 import by.epamtc.birukov.entity.Question;
+import by.epamtc.birukov.entity.RunTest;
 import by.epamtc.birukov.entity.Test;
 import by.epamtc.birukov.service.TestService;
 
@@ -51,5 +53,14 @@ public class TestServiceImpl implements TestService {
         test = sqlTestDAO.showTestById(id);
 
         return test;
+    }
+
+    @Override
+    public void appointTest(RunTest runTest) throws DAOException {
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        TestDAO sqlTestDAO = daoProvider.getTestDAO();
+
+
+
     }
 }

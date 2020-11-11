@@ -3,6 +3,7 @@ package by.epamtc.birukov.entity;
 import java.util.Objects;
 
 public class User {
+    private int userId;
     private String email;
     private String password;
     private String username;
@@ -11,7 +12,13 @@ public class User {
     private String middleName;
     private String role;
 
+    public int getUserId() {
+        return userId;
+    }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public void setRole(String role) {
         this.role = role;

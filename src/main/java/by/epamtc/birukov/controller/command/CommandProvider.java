@@ -20,6 +20,9 @@ public class CommandProvider {
         commands.put(ParametrName.CREATE_TEST, new CreateTestCommand());
         commands.put(ParametrName.SHOW_ALL_TESTS, new ShowAllTestsCommand());
         commands.put(ParametrName.SHOW_TEST_BY_NAME, new ShowTestByNameCommand());
+        commands.put(ParametrName.SHOW_ALL_USERS, new ShowAllUsersCommand());
+        commands.put(ParametrName.GO_TO_APPOINT_TEST, new GoToAppointTestCommand());
+        commands.put(ParametrName.APPOINT_TEST, new AppointTestCommand());
     }
 
     public Command getCommand(String commandName){

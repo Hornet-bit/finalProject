@@ -20,8 +20,7 @@
     <p/>
 
     <c:out value="${test.getQuestion(i).getTextQuestion()}" default="нет данных"/>
-    <%--    <c:out value="${test.getQuestion(i).getCountOfAnswer()}" default="нет данных"/>--%>
-    <%--    внутренний цикл, который выводит все ответы--%>
+
 
     <c:forEach var="k" begin="0" end="${test.getQuestion(i).getCountOfAnswer() - 1}" step="1">
         <fieldset>
@@ -35,12 +34,8 @@
     </c:forEach>
 
 </c:forEach>
-<%--${fn:length(test.questionList)}--%>
-<p/>
-<%--<c:forEach var="tempTest" varStatus="counter" items="${test.getQuestion(counter).getTextQuestion()}" >--%>
-<%--    <c:out value="aa"/>--%>
-<%--&lt;%&ndash;    <c:out value="${tempTest.getQuestion(counter).getTextQuestion()}"/>&ndash;%&gt;--%>
-<%--</c:forEach>--%>
+
+
 
 
 </body>

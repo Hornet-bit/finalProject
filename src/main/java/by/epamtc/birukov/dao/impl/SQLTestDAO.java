@@ -2,10 +2,7 @@ package by.epamtc.birukov.dao.impl;
 
 import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.dao.TestDAO;
-import by.epamtc.birukov.entity.Answer;
-import by.epamtc.birukov.entity.BasicDescriptionTest;
-import by.epamtc.birukov.entity.Question;
-import by.epamtc.birukov.entity.Test;
+import by.epamtc.birukov.entity.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,6 +35,7 @@ public class SQLTestDAO implements TestDAO {
             preparedStatement.setString(2, test.getDescription());
 
             preparedStatement.executeUpdate();
+//todo сделать внутренний селект
 
             preparedStatement = connection.prepareStatement(GET_ID_TEST);
             preparedStatement.setString(1, test.getName());
@@ -75,18 +73,19 @@ public class SQLTestDAO implements TestDAO {
                 String sql = "INSERT INTO questions (id_test, question) values (?, ?)";
 
 
-                preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);//todo сделать так же для теста
                 preparedStatement.setInt(1, idTest);
                 preparedStatement.setString(2, test.getQuestion(question).getTextQuestion());
                 preparedStatement.executeUpdate();
 
                 ResultSet generatedKeys = null;
                 generatedKeys = preparedStatement.getGeneratedKeys();
+
                 if (generatedKeys.next()) {
                     generatedIdQuestion = generatedKeys.getInt(1);
                 }
                 addAnswerToTable(generatedIdQuestion, question, test);
-                //вызов addAnswer()
+
 
                 question++;
             }
@@ -106,7 +105,7 @@ public class SQLTestDAO implements TestDAO {
         int answer = 0;
 
 
-        while (answer <= test.getQuestion(question).getCountOfAnswer()) {//возм тут ошибка
+        while (answer <= test.getQuestion(question).getCountOfAnswer()) {
 
 
             String ADD_ANSWER = "INSERT INTO answers (content, result, id_q) values (?,?,?)";//todo вынести в константы
@@ -311,6 +310,15 @@ public class SQLTestDAO implements TestDAO {
         }
 
         return answer;
+    }
+private static final String INSERT_ID_TO_RUN_TEST = "INSERT INTO run_tests (?) VALUES (54)";
+//private static final String INSERT_ID_TO_RUN_TEST = "INSERT INTO run_tests (?) VALUES (54)";
+    @Override
+    public void appointTest(RunTest runTest) throws DAOException {
+
+        Connection connection = null;
+        connection = pool.getConnection();
+
     }
 
 }

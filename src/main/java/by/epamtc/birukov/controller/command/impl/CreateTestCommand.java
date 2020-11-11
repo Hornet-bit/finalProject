@@ -52,17 +52,6 @@ public class CreateTestCommand implements Command {
 
 
 
-//        System.out.println(request.getParameter("image"));
-
-//        System.out.println("Questions = " + request.getParameter("count"));
-
-//        System.out.println(request.getParameter("cq0a0"));
-//        System.out.println(request.getParameter("cq0a1"));
-//        System.out.println(request.getParameter("cq0a2"));
-//        System.out.println(request.getParameter("cq0a3"));
-
-
-
         RequestDispatcher dispatcher = request.getRequestDispatcher(FILING_QUESTIONS);
         dispatcher.forward(request, response);
     }

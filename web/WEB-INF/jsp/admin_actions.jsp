@@ -20,3 +20,13 @@
     <input type="submit" value="показать все тесты">
 </form>
 
+<form action="controller" method="get">
+    <input type="hidden" name="command" value="show_all_users">
+    <input type="submit" value="показать всех пользователей">
+</form>
+
+<%--<form action="controller" method="get">--%>
+<%--    <input type="hidden" name="command" value="appoint_test">--%>
+<%--    <input type="submit" value="назначить тест">--%>
+<%--</form>--%>
+

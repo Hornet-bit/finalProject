@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQLUserDAO implements UserDAO {
 
@@ -101,12 +103,10 @@ public class SQLUserDAO implements UserDAO {
         ResultSet resultSet = null;
 
         connection = pool.getConnection();
-//        String sql = "SELECT * FROM users U JOIN user_details JOIN role R on username = ? AND  U.role_id=R.id";
-//        SELECT role from users U JOIN role R on  username = 'rfr' AND U.role_id=R.id;
+
 
         User user = null;
         try {
-
 
             preparedStatement = connection.prepareStatement(AUTHORIZATION);
 
@@ -127,13 +127,47 @@ public class SQLUserDAO implements UserDAO {
             }
 
 
-
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DAOException(e);
         }
 
         return user;
+    }
+
+    private static final String SHOW_ALL_USERS = "SELECT U.id, username, role FROM users U JOIN role R on U.role_id=R.id";
+
+    @Override
+    public List<User> showAllUsers() throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        connection = pool.getConnection();
+        List<User> listOfUsers = new ArrayList<>();
+
+        try {
+
+
+            preparedStatement = connection.prepareStatement(SHOW_ALL_USERS);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                User user = new User();
+                user.setUserId(resultSet.getInt("id"));
+                user.setUsername(resultSet.getString("username"));
+                user.setRole(resultSet.getString("role"));
+
+                listOfUsers.add(user);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //todo log
+        } finally {
+            pool.releaseConnection(connection);
+        }
+        return listOfUsers;
     }
 
 

@@ -15,6 +15,7 @@
 <h1>Все тесты</h1>
 
 <form action="controller" method="get">
+
     <div>
         <c:forEach var="tempTest" items="${all_tests}">
 
@@ -27,14 +28,18 @@
             </fieldset>
         </c:forEach>
     </div>
-    <input type="hidden" name="command" value="show_test_by_name">
-    <input type="submit" value="показать этот тест">
-    <p/>
-<c:forEach var="tempTest" items="${li}">
-<%--    <c:out value="${tempTest.id}"></c:out>--%>
-    <c:out value="${tempTest.name}"></c:out>
 
-</c:forEach>
+    <input type="hidden" name="command" value="show_test_by_name" id="command_id">
+    <input type="submit" value="показать этот тест">
+    <input type="submit" value="назначить тест" onclick="document.getElementById('command_id').value ='go_to_appoint_test'">
+    <p/>
+<%--    <c:forEach var="tempTest" items="${li}">--%>
+<%--        &lt;%&ndash;    <c:out value="${tempTest.id}"></c:out>&ndash;%&gt;--%>
+<%--        <c:out value="${tempTest.name}">--%>
+
+<%--        </c:out>--%>
+
+<%--    </c:forEach>--%>
 
 </form>
 </body>
