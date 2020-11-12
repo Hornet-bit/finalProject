@@ -18,5 +18,6 @@ public enum ParametrName {
     GO_TO_APPOINT_TEST,
     APPOINT_TEST,
     VIEW_ASSIGNED_TESTS,
-    PASS_TEST
+    PASS_TEST,
+    LOGOUT
 }

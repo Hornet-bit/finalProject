@@ -26,6 +26,7 @@ public class CommandProvider {
         commands.put(ParametrName.APPOINT_TEST, new AppointTestCommand());
         commands.put(ParametrName.VIEW_ASSIGNED_TESTS, new ViewAssignedTestsCommand());
         commands.put(ParametrName.PASS_TEST, new PassTestCommand());
+        commands.put(ParametrName.LOGOUT, new LogautCommand());
     }
 
     public Command getCommand(String commandName){

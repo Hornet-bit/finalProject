@@ -11,8 +11,6 @@
 <c:out value="${test.name}"/>
 <c:out value="${test.description}"/>
 
-
-<%--<c:out value="${test.getQuestion(1).getTextQuestion()}" default="нет данных"/>--%>
 <p/>
 <c:out value="количество вопросов ${test.getCountOfQuestion()} " default=" упс, ни одного вопроса..."/>
 <p/>

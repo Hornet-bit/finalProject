@@ -437,7 +437,7 @@ public class SQLTestDAO implements TestDAO {
             preparedStatement.setInt(1, idUser);
             resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
+            while (resultSet.next()) {
 
                 testsId.add(resultSet.getInt("id_test"));
             }

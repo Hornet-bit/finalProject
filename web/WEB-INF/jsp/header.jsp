@@ -7,6 +7,9 @@
     <input type="submit" value="settings">
 </form>
 
-<c:if test="${user.role eq 'admin'}">
-    <c:import url="admin_actions.jsp"/>
-</c:if>
+<form action="controller" method="post">
+
+    <input type="hidden" name="command" value="logout">
+    <input type="submit" value="logout">
+
+</form>
