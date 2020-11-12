@@ -7,7 +7,7 @@
 </head>
 <body>
 <c:import url="header.jsp"/>
-<h1>Тут список пользователей</h1>
+<h1>Выберите человека, которому нужно назначить тест</h1>
 <c:set var="i" scope="page" value="0"></c:set>
 <form action="controller" method="post">
     <c:forEach var="user" items="${user_list}">
@@ -17,14 +17,14 @@
             <c:out value="${user.role}"/>
             <input type="checkbox" name="set_check${i}" value="${user.userId}">
                 <%--        <c:out value="${user.userId}"/>--%>
-                <%--            ${i = i + 1}--%>
+<%--            ${i = i + 1}--%>
 
         </fieldset>
     </c:forEach>
-    <%--    сделать различное отобрадение для просто списка пользователей и для назначеня им теста--%>
-<%--    <input type="hidden" name="command" value="appoint_test">--%>
-<%--    <input type="submit" value="выбрать беднягам тесты">--%>
-<%--    <input type="hidden" name="count" value="${i}">--%>
+<%--    сделать различное отобрадение для просто списка пользователей и для назначеня им теста--%>
+    <input type="hidden" name="command" value="appoint_test">
+    <input type="submit" value="выбрать беднягам тесты">
+    <input type="hidden" name="count" value="${i}">
 </form>
 </body>
 </html>

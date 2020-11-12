@@ -1,5 +1,6 @@
 package by.epamtc.birukov.service;
 
+import by.epamtc.birukov.entity.AuthenticationData;
 import by.epamtc.birukov.entity.BasicDescriptionTest;
 import by.epamtc.birukov.entity.User;
 import by.epamtc.birukov.entity.UserRegForm;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public interface ClientService {
 
-    User authentication(String login, String password) throws ServiceException;
+    AuthenticationData authentication(String login, String password) throws ServiceException;
 
     boolean registration(UserRegForm user) throws ServiceException;
 

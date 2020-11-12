@@ -19,5 +19,6 @@ public enum ParametrName {
     APPOINT_TEST,
     VIEW_ASSIGNED_TESTS,
     PASS_TEST,
-    LOGOUT
+    LOGOUT,
+    GO_TO_HALLO_PAGE
 }

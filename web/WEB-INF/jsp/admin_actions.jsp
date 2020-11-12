@@ -5,10 +5,10 @@
     <input type="submit" value="Go To Create test">
 </form>
 
-<form action="controller" method="get">
-    <input type="hidden" name="command" value="verify_test">
-    <input type="submit" value="Verify test">
-</form>
+<%--<form action="controller" method="get">--%>
+<%--    <input type="hidden" name="command" value="verify_test">--%>
+<%--    <input type="submit" value="Verify test">--%>
+<%--</form>--%>
 
 <form action="controller" method="get">
     <input type="hidden" name="command" value="create_subject">

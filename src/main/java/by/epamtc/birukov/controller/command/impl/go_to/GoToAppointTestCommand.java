@@ -44,7 +44,7 @@ public class GoToAppointTestCommand implements Command {
         }
         request.setAttribute("user_list", listOfUsers);
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/list_of_users.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/appoint_test_to_users.jsp");
         requestDispatcher.forward(request, response);
 
 //        List<BasicDescriptionTest> listOfQuestion= new ArrayList<>();

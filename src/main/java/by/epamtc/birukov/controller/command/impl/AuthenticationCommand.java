@@ -2,6 +2,7 @@ package by.epamtc.birukov.controller.command.impl;
 
 import by.epamtc.birukov.controller.command.Command;
 import by.epamtc.birukov.dao.DAOException;
+import by.epamtc.birukov.entity.AuthenticationData;
 import by.epamtc.birukov.entity.User;
 import by.epamtc.birukov.service.ClientService;
 import by.epamtc.birukov.service.ServiceException;
@@ -47,22 +48,26 @@ public class AuthenticationCommand implements Command {
 
         User user = null;
         String page = null;
-
+        AuthenticationData authenticationData;
         try {
 
-            user = clientService.authentication(login, password);
+            authenticationData = clientService.authentication(login, password);
 
-            if (user == null){
+            if (authenticationData == null){
                 request.setAttribute("error", "wrong login or password");
                 page = LOGIN_PAGE;
 
 
             } else {
-                request.setAttribute("user", user);
+
+
+//                authenticationData.setUsername();
+//                request.setAttribute("user", user);
                 page = HELLO_PAGE;
                 HttpSession session = request.getSession();
-                session.setAttribute("login", user.getUsername());
-                session.setAttribute("role", user.getRole());
+                session.setAttribute("user", authenticationData);
+                session.setAttribute("login", authenticationData.getUsername());
+                session.setAttribute("role", authenticationData.getUserRole());
             }
         } catch (ServiceException e){
             page = ERROR_PAGE;

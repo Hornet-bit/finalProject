@@ -7,9 +7,9 @@
 </head>
 <body>
 <h1>Приветствую тебя, странник</h1>
-<c:out value="${user.username}" default="ничего"/>
-<p/>
-<c:out value="${user.role}" default="роль не определена"/>
+<%--<c:out value="${user.username}" default="ничего"/>--%>
+<%--<p/>--%>
+<%--<c:out value="${user.role}" default="роль не определена"/>--%>
 
 
 
@@ -18,7 +18,7 @@
     <input type="submit" value="посмотреть назначенные мне тесты">
 </form>
 
-<c:if test="${user.role eq 'admin'}">
+<c:if test="${user.getUserRole() eq 'admin'}">
     <c:import url="admin_actions.jsp"/>
 </c:if>
 </body>

@@ -27,6 +27,7 @@ public class CommandProvider {
         commands.put(ParametrName.VIEW_ASSIGNED_TESTS, new ViewAssignedTestsCommand());
         commands.put(ParametrName.PASS_TEST, new PassTestCommand());
         commands.put(ParametrName.LOGOUT, new LogautCommand());
+        commands.put(ParametrName.GO_TO_HALLO_PAGE, new GoToHalloPageCommand());
     }
 
     public Command getCommand(String commandName){

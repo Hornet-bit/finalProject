@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.sql.*;
 
 public class Controller extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         process(request, response);
     }
@@ -27,7 +27,6 @@ public class Controller extends HttpServlet {
     }
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
 
         CommandProvider provider = new CommandProvider();
 
@@ -40,14 +39,12 @@ public class Controller extends HttpServlet {
         command = provider.getCommand(currentCommandName);
         try {
 
-
             command.execute(request, response);
-        } catch (DAOException e){
+        } catch (DAOException e) {
             e.printStackTrace();
             //todo log
         }
 
     }
-
 
 }

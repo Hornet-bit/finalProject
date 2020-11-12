@@ -2,6 +2,7 @@ package by.epamtc.birukov.dao.impl;
 
 import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.dao.UserDAO;
+import by.epamtc.birukov.entity.AuthenticationData;
 import by.epamtc.birukov.entity.BasicDescriptionTest;
 import by.epamtc.birukov.entity.User;
 import by.epamtc.birukov.entity.UserRegForm;
@@ -19,13 +20,13 @@ public class SQLUserDAO implements UserDAO {
     private static final String DEFAULT_ROLE = "4";
     //todo баг sql
 
-    private static final String AUTHENTHCATION = "SELECT * FROM users WHERE username = ? AND password = ?";
+    private static final String AUTHENTHCATION = "SELECT U.id, username, role FROM users U JOIN role R ON username = ? AND password= ? AND  U.role_id=R.id";
     private static final String AUTHORIZATION = "SELECT * FROM users U JOIN role R on username = ? AND  U.role_id=R.id";
 
     private static final ConnectionPool pool = ConnectionPool.getInstance();
 
     @Override
-    public User authentication(String login, String password) throws DAOException {
+    public AuthenticationData authentication(String login, String password) throws DAOException {
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -33,6 +34,8 @@ public class SQLUserDAO implements UserDAO {
         User user = null;
 
         connection = pool.getConnection();
+
+        AuthenticationData authenticationData = new AuthenticationData();
 
         try {
 
@@ -45,9 +48,15 @@ public class SQLUserDAO implements UserDAO {
 
             if (resultSet.next()) {
 
+
+                authenticationData.setUsername(resultSet.getString("username"));
+                authenticationData.setId(resultSet.getInt("id"));
+                authenticationData.setUserRole(resultSet.getString("role"));
+
+
                 user = new User();
 //                user.setUsername(resultSet.getString("username"));
-                user = authorization(login);
+//                user = authorization(login);
 
                 //todo передать параметры
             }
@@ -60,7 +69,7 @@ public class SQLUserDAO implements UserDAO {
             //close connection
         }
 
-        return user;
+        return authenticationData;
     }
 
     @Override
@@ -98,43 +107,49 @@ public class SQLUserDAO implements UserDAO {
     }
 
     @Override
-    public User authorization(String login) throws DAOException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+    public User getSettings(int id) {
 
-        connection = pool.getConnection();
-
-
-        User user = null;
-        try {
-
-            preparedStatement = connection.prepareStatement(AUTHORIZATION);
-
-            preparedStatement.setString(1, login);
-
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-
-                user = new User();
-
-                user.setEmail(resultSet.getString("email"));
-                user.setUsername(resultSet.getString("username"));
-                user.setPassword(resultSet.getString("password"));
-                user.setRole(resultSet.getString("role"));
-                System.out.println(user.getRole());
-
-            }
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DAOException(e);
-        }
-
-        return user;
+        return null;
     }
+
+//    @Override
+//    public User authorization(String login) throws DAOException {
+//        Connection connection = null;
+//        PreparedStatement preparedStatement = null;
+//        ResultSet resultSet = null;
+//
+//        connection = pool.getConnection();
+//
+//
+//        User user = null;
+//        try {
+//
+//            preparedStatement = connection.prepareStatement(AUTHORIZATION);
+//
+//            preparedStatement.setString(1, login);
+//
+//            resultSet = preparedStatement.executeQuery();
+//
+//            while (resultSet.next()) {
+//
+//                user = new User();
+//
+//                user.setEmail(resultSet.getString("email"));
+//                user.setUsername(resultSet.getString("username"));
+//                user.setPassword(resultSet.getString("password"));
+//                user.setRole(resultSet.getString("role"));
+//                System.out.println(user.getRole());
+//
+//            }
+//
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            throw new DAOException(e);
+//        }
+//
+//        return user;
+//    }
 
     private static final String SHOW_ALL_USERS = "SELECT U.id, username, role FROM users U JOIN role R on U.role_id=R.id";
 

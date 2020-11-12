@@ -3,6 +3,7 @@ package by.epamtc.birukov.service.impl;
 import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.dao.DAOProvider;
 import by.epamtc.birukov.dao.UserDAO;
+import by.epamtc.birukov.entity.AuthenticationData;
 import by.epamtc.birukov.entity.BasicDescriptionTest;
 import by.epamtc.birukov.entity.User;
 import by.epamtc.birukov.entity.UserRegForm;
@@ -19,7 +20,7 @@ public class ClientServiceImpl implements ClientService {
 
     //возврат null если пользователь не найден
     @Override
-    public User authentication(String login, String password) throws ServiceException {
+    public AuthenticationData authentication(String login, String password) throws ServiceException {
 
         if (!ServiceValidator.isDataCorrect(login, password)) {
             throw new ServiceException("Login or password if incorrect");
@@ -27,16 +28,17 @@ public class ClientServiceImpl implements ClientService {
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         UserDAO userDAO = daoProvider.getUserDAO();
+        AuthenticationData authenticationData;
 
-        User user = null;
+
         try {
-            user = userDAO.authentication(login, password);
+            authenticationData = userDAO.authentication(login, password);
 
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
 
-        return user;
+        return authenticationData;
     }
 
     @Override
@@ -60,15 +62,15 @@ public class ClientServiceImpl implements ClientService {
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         UserDAO userDAO = daoProvider.getUserDAO();
-        User user;
-        try {
-            user = new User();
-            user = userDAO.authorization(login);
-
-        } catch (DAOException e) {
-            e.printStackTrace();
-            throw new ServiceException(e);
-        }
+        User user = null;
+//        try {
+//            user = new User();
+//            user = userDAO.authorization(login);
+//
+//        } catch (DAOException e) {
+//            e.printStackTrace();
+//            throw new ServiceException(e);
+//        }
         return user;
     }
 
