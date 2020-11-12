@@ -3,6 +3,7 @@ package by.epamtc.birukov.service.impl;
 import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.dao.DAOProvider;
 import by.epamtc.birukov.dao.UserDAO;
+import by.epamtc.birukov.entity.BasicDescriptionTest;
 import by.epamtc.birukov.entity.User;
 import by.epamtc.birukov.entity.UserRegForm;
 import by.epamtc.birukov.service.ClientService;
@@ -90,4 +91,5 @@ public class ClientServiceImpl implements ClientService {
         }
         return listOfUsers;
     }
+
 }

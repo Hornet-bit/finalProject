@@ -2,6 +2,7 @@ package by.epamtc.birukov.dao.impl;
 
 import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.dao.UserDAO;
+import by.epamtc.birukov.entity.BasicDescriptionTest;
 import by.epamtc.birukov.entity.User;
 import by.epamtc.birukov.entity.UserRegForm;
 

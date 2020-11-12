@@ -23,4 +23,6 @@ public interface TestDAO {
 
     void appointTest(RunTest runTest) throws DAOException;
 
+    List<BasicDescriptionTest> showMyTests(String login) throws DAOException;
+
 }

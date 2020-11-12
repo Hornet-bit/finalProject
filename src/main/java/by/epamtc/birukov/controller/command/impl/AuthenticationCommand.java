@@ -71,7 +71,7 @@ public class AuthenticationCommand implements Command {
 
             throw new DAOException(e);
 
-            //todo log4j мб работает проверить
+            //todo log4j
         } finally {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
             requestDispatcher.forward(request, response);

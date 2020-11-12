@@ -17,4 +17,6 @@ public interface TestService {
     Test showTestById(int id) throws DAOException;
 
     void appointTest(RunTest runTest) throws DAOException;
+
+    List<BasicDescriptionTest> showMyTests(String login);
 }

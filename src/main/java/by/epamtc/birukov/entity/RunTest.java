@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RunTest {
-    private int idUser;
     private int idTest;
     private List<Integer> listOfStudents = new ArrayList<>();
 
@@ -14,7 +13,7 @@ public class RunTest {
     public RunTest() {
     }
 
-    public int getStudent(int index){
+    public int getIdUser(int index){
         return listOfStudents.get(index);
     }
 
@@ -22,13 +21,10 @@ public class RunTest {
         listOfStudents.add(id);
     }
 
-    public int getIdUser() {
-        return idUser;
+    public int getSize(){
+        return listOfStudents.size();
     }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
-    }
 
     public int getIdTest() {
         return idTest;

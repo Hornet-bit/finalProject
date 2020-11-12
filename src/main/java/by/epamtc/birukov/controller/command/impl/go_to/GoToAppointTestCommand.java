@@ -1,4 +1,4 @@
-package by.epamtc.birukov.controller.command.impl;
+package by.epamtc.birukov.controller.command.impl.go_to;
 
 import by.epamtc.birukov.controller.command.Command;
 import by.epamtc.birukov.dao.DAOException;

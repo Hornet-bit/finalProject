@@ -60,7 +60,24 @@ public class TestServiceImpl implements TestService {
         DAOProvider daoProvider = DAOProvider.getInstance();
         TestDAO sqlTestDAO = daoProvider.getTestDAO();
 
+        sqlTestDAO.appointTest(runTest);
 
 
+
+    }
+
+    @Override
+    public List<BasicDescriptionTest> showMyTests(String login) {
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        TestDAO sqlTestDAO = daoProvider.getTestDAO();
+
+        List<BasicDescriptionTest> bdt = new ArrayList<>();
+        try {
+            bdt = sqlTestDAO.showMyTests(login);
+        } catch (DAOException e){
+            e.printStackTrace();
+        }
+
+        return bdt;
     }
 }

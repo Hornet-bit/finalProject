@@ -16,5 +16,7 @@ public enum ParametrName {
     SHOW_TEST_BY_NAME,
     SHOW_ALL_USERS,
     GO_TO_APPOINT_TEST,
-    APPOINT_TEST
+    APPOINT_TEST,
+    VIEW_ASSIGNED_TESTS,
+    PASS_TEST
 }

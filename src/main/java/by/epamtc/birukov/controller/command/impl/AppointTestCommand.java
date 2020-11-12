@@ -36,7 +36,6 @@ public class AppointTestCommand implements Command {
                 int idUser = Integer.parseInt(request.getParameter(parameterName));
 
                 runTest.setStudent(idUser);
-//                runTest.setIdUser(idUser);
             }
 
         }
@@ -44,7 +43,7 @@ public class AppointTestCommand implements Command {
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
         TestService testService = serviceProvider.getTestService();
 
-
+        testService.appointTest(runTest);
 
     }
 }

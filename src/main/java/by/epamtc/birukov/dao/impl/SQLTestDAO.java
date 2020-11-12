@@ -7,6 +7,7 @@ import by.epamtc.birukov.entity.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SplittableRandom;
 
 public class SQLTestDAO implements TestDAO {
 
@@ -15,12 +16,17 @@ public class SQLTestDAO implements TestDAO {
     private static final String GET_TESTPARAM_BY_ID = "SELECT id_test, name, description FROM tests AS t WHERE t.id_test = ?";
     private final static String GET_QUESTION_FROM_TEST = "SELECT id, question, content FROM questions AS q WHERE q.id_test = ?";
     private final static String GET_ANSWER_FROM_QUESTION = "SELECT id_ans, content, result FROM answers AS ans WHERE ans.id_q = ?";
+    private final static String GET_ID_USER = "SELECT id FROM users WHERE username = ?";
+    private final static String GET_TESTS_USER = "SELECT id_test FROM run_tests WHERE id_user = ?";
+    private final static String GET_SHORT_INFO_TESTS_USER = "SELECT id_test, name, description FROM tests WHERE id_test = ?";
+
+
 
     @Override
     public void createTest(Test test) throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        ResultSet generatedTestId = null;
         int idTest = 0;
 
         connection = pool.getConnection();
@@ -30,24 +36,21 @@ public class SQLTestDAO implements TestDAO {
             connection.setAutoCommit(false);
             String sql = "INSERT INTO tests (name, description) values (?, ?)";
 
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, test.getName());
             preparedStatement.setString(2, test.getDescription());
 
             preparedStatement.executeUpdate();
-//todo сделать внутренний селект
 
-            preparedStatement = connection.prepareStatement(GET_ID_TEST);
-            preparedStatement.setString(1, test.getName());
-            resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                idTest = resultSet.getInt("id_test");
-                System.out.println(idTest);
+            generatedTestId = preparedStatement.getGeneratedKeys();
+            if (generatedTestId.next()) {
+                idTest = generatedTestId.getInt(1);
             }
+
             connection.setAutoCommit(true);
             addQuestionToTable(test, idTest);
 
+            //addIdToRunTests(idTest);
 
             pool.releaseConnection(connection);
 
@@ -56,6 +59,27 @@ public class SQLTestDAO implements TestDAO {
             e.printStackTrace();
             //todo log & DAOExep
         }
+    }
+
+    private final static String SET_ID_TO_RUNTESTS = "INSERT INTO run_tests (test_id) values (?)";
+
+    private void addIdToRunTests(int id) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = pool.getConnection();
+
+            preparedStatement = connection.prepareStatement(SET_ID_TO_RUNTESTS);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //todo log
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void addQuestionToTable(Test test, int idTest) throws DAOException {
@@ -73,7 +97,7 @@ public class SQLTestDAO implements TestDAO {
                 String sql = "INSERT INTO questions (id_test, question) values (?, ?)";
 
 
-                preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);//todo сделать так же для теста
+                preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setInt(1, idTest);
                 preparedStatement.setString(2, test.getQuestion(question).getTextQuestion());
                 preparedStatement.executeUpdate();
@@ -199,7 +223,6 @@ public class SQLTestDAO implements TestDAO {
         Test test;
         test = takeTestInfoFromDB(id);
 
-
         return test;
     }
 
@@ -311,13 +334,149 @@ public class SQLTestDAO implements TestDAO {
 
         return answer;
     }
-private static final String INSERT_ID_TO_RUN_TEST = "INSERT INTO run_tests (?) VALUES (54)";
-//private static final String INSERT_ID_TO_RUN_TEST = "INSERT INTO run_tests (?) VALUES (54)";
+
+    private static final String INSERT_IDUSER_TO_RUN_TEST = "INSERT INTO run_tests (id_test, id_user) VALUES (?, ?)";
+
+
     @Override
     public void appointTest(RunTest runTest) throws DAOException {
 
         Connection connection = null;
         connection = pool.getConnection();
+
+        PreparedStatement preparedStatement = null;
+        try {
+
+            preparedStatement = connection.prepareStatement(INSERT_IDUSER_TO_RUN_TEST);
+            for (int i = 0; i < runTest.getSize(); i++) {
+
+                preparedStatement.setInt(1, runTest.getIdTest());
+                preparedStatement.setInt(2, runTest.getIdUser(i));
+                preparedStatement.executeUpdate();
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //todo log
+            pool.releaseConnection(connection);
+        }
+    }
+
+
+
+
+
+    @Override
+    public List<BasicDescriptionTest> showMyTests(String login) throws DAOException {
+
+
+        List<BasicDescriptionTest> listOfTests = new ArrayList<>();
+
+        int idUser = getIdUser(login);
+
+        List<Integer> testsId = getIdTestsByUserId(idUser);//size 0
+
+        for (int i = 0; i < testsId.size(); i++) {
+
+            int idTest = testsId.get(i);
+
+            BasicDescriptionTest bdt = getBasicTestInfoById(idTest);
+
+            listOfTests.add(bdt);
+        }
+
+//todo вызов ещё 1 метода
+
+        return listOfTests;
+    }
+
+    private BasicDescriptionTest getBasicTestInfoById(int id) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        BasicDescriptionTest bdt = new BasicDescriptionTest();
+        try {
+            connection = pool.getConnection();
+            preparedStatement = connection.prepareStatement(GET_SHORT_INFO_TESTS_USER);
+            preparedStatement.setInt(1, id);
+
+            resultSet = preparedStatement.executeQuery();
+
+
+            while (resultSet.next()) {
+
+                bdt.setId(resultSet.getInt("id_test"));
+                bdt.setName(resultSet.getString("name"));
+                bdt.setDescription(resultSet.getString("description"));
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
+        return bdt;
+    }
+
+    private List<Integer> getIdTestsByUserId(int idUser) {
+
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        List<Integer> testsId = new ArrayList<>();
+        try {
+
+            connection = pool.getConnection();
+            preparedStatement = connection.prepareStatement(GET_TESTS_USER);
+            preparedStatement.setInt(1, idUser);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+
+                testsId.add(resultSet.getInt("id_test"));
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DAOException e) {
+            e.printStackTrace();
+        } finally {
+            pool.releaseConnection(connection);
+        }
+        return testsId;
+
+    }
+
+    private int getIdUser(String login) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        int idUser = 0;
+
+        try {
+            connection = pool.getConnection();
+            preparedStatement = connection.prepareStatement(GET_ID_USER);
+            preparedStatement.setString(1, login);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                idUser = resultSet.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        return idUser;
 
     }
 

@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
+    <c:import url="header.jsp"/>
     <title>hello</title>
 </head>
 <body>
@@ -10,10 +11,11 @@
 <p/>
 <c:out value="${user.role}" default="роль не определена"/>
 
-<form>
-    <input type="hidden" name="command" value="go_to_settings">
 
-    <input type="submit" value="settings">
+
+<form action="controller" method="post">
+    <input type="hidden" name="command" value="view_assigned_tests">
+    <input type="submit" value="посмотреть назначенные мне тесты">
 </form>
 
 <c:if test="${user.role eq 'admin'}">

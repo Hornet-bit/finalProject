@@ -20,9 +20,10 @@
 
         </fieldset>
     </c:forEach>
-<%--    <input type="hidden" name="command" value="appoint_test">--%>
-<%--    <input type="submit" value="выбрать беднягам тесты">--%>
-<%--    <input type="hidden" name="count" value="${i}">--%>
+<%--    сделать различное отобрадение для просто списка пользователей и для назначеня им теста--%>
+    <input type="hidden" name="command" value="appoint_test">
+    <input type="submit" value="выбрать беднягам тесты">
+    <input type="hidden" name="count" value="${i}">
 </form>
 </body>
 </html>

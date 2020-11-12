@@ -1,6 +1,7 @@
 package by.epamtc.birukov.controller.command;
 
 import by.epamtc.birukov.controller.command.impl.*;
+import by.epamtc.birukov.controller.command.impl.go_to.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,8 @@ public class CommandProvider {
         commands.put(ParametrName.SHOW_ALL_USERS, new ShowAllUsersCommand());
         commands.put(ParametrName.GO_TO_APPOINT_TEST, new GoToAppointTestCommand());
         commands.put(ParametrName.APPOINT_TEST, new AppointTestCommand());
+        commands.put(ParametrName.VIEW_ASSIGNED_TESTS, new ViewAssignedTestsCommand());
+        commands.put(ParametrName.PASS_TEST, new PassTestCommand());
     }
 
     public Command getCommand(String commandName){
