@@ -12,6 +12,11 @@ public class User {
     private String middleName;
     private String role;
 
+    //todo постаратья избавиться от пароля и логина
+
+    public User() {
+    }
+
     public int getUserId() {
         return userId;
     }
@@ -25,8 +30,7 @@ public class User {
     }
 
     //todo добавить дату рождения
-    public User() {
-    }
+
 
     public String getName() {
         return name;

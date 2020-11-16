@@ -14,7 +14,7 @@ public interface UserDAO {
     boolean registration(UserRegForm user) throws DAOException;
 
 //    User authorization(String login) throws DAOException;
-    User getSettings(int id);
+    User getSettings(int id) throws DAOException;
 
     List<User> showAllUsers() throws DAOException;
 

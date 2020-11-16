@@ -10,23 +10,32 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class PassTestCommand implements Command {
+    private static final String CHARACTER_ENCODING = "UTF-8";
+    private static final String ATTRIBUTE_NAME_RADIOBUTTON = "radioBTN";
+    private static final String ATTRIBUTE_NAME_TEST = "test";
+    private static final String PAGE_PASS_TEST = "/WEB-INF/jsp/pass_test.jsp";
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
-        System.out.println(request.getParameter("radioBTN"));
+
+        request.setCharacterEncoding(CHARACTER_ENCODING);
 
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
         TestService testService = serviceProvider.getTestService();
 
-        int idTest = Integer.parseInt(request.getParameter("radioBTN"));
+        int idTest = Integer.parseInt(request.getParameter(ATTRIBUTE_NAME_RADIOBUTTON));
         Test test;
         test = testService.showTestById(idTest);
 
-        request.setAttribute("test", test);
+//        request.setAttribute("test", test);
+        HttpSession httpSession = request.getSession();
+        httpSession.setAttribute(ATTRIBUTE_NAME_TEST, test);
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/pass_test.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(PAGE_PASS_TEST);
         requestDispatcher.forward(request, response);
     }
 }

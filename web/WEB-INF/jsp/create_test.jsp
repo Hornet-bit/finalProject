@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <c:import url="header.jsp"/>
     <title>Create u own test</title>
 
 </head>

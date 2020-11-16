@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>settings</title>
+    <c:import url="header.jsp"/>
 </head>
 <body>
 <h1>Settings</h1>

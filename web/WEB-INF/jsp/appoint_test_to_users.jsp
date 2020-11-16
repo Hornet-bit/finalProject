@@ -4,9 +4,9 @@
 <html>
 <head>
     <title>Title</title>
+    <c:import url="header.jsp"/>
 </head>
 <body>
-<c:import url="header.jsp"/>
 <h1>Выберите человека, которому нужно назначить тест</h1>
 <c:set var="i" scope="page" value="0"></c:set>
 <form action="controller" method="post">

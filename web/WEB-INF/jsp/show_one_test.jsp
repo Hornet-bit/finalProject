@@ -3,7 +3,8 @@
 <%--<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>--%>
 <html>
 <head>
-    <title>Title</title>
+    <title>Показ конкретного теста</title>
+    <c:import url="header.jsp"/>
 </head>
 <body>
 <h1>Один тест:</h1>

@@ -4,13 +4,10 @@ import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.dao.DAOProvider;
 import by.epamtc.birukov.dao.UserDAO;
 import by.epamtc.birukov.entity.AuthenticationData;
-import by.epamtc.birukov.entity.BasicDescriptionTest;
 import by.epamtc.birukov.entity.User;
 import by.epamtc.birukov.entity.UserRegForm;
 import by.epamtc.birukov.service.ClientService;
 import by.epamtc.birukov.service.ServiceException;
-import by.epamtc.birukov.service.ServiceProvider;
-import by.epamtc.birukov.service.TestService;
 import by.epamtc.birukov.service.validator.ServiceValidator;
 
 import java.util.ArrayList;
@@ -18,17 +15,18 @@ import java.util.List;
 
 public class ClientServiceImpl implements ClientService {
 
-    //возврат null если пользователь не найден
+    //todo возврат null если пользователь не найден
     @Override
     public AuthenticationData authentication(String login, String password) throws ServiceException {
 
         if (!ServiceValidator.isDataCorrect(login, password)) {
-            throw new ServiceException("Login or password if incorrect");
+            throw new ServiceException("Login or password are incorrect");
         }
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         UserDAO userDAO = daoProvider.getUserDAO();
-        AuthenticationData authenticationData;
+
+        AuthenticationData authenticationData = null;
 
 
         try {
@@ -36,6 +34,7 @@ public class ClientServiceImpl implements ClientService {
 
         } catch (DAOException e) {
             throw new ServiceException(e);
+            //todo log
         }
 
         return authenticationData;

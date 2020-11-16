@@ -12,6 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CreateNewUserCommand implements Command {
+
+    private static final String ATTRIBUTE_NAME_USERNAME = "username";
+    private static final String ATTRIBUTE_NAME_EMAIL = "email";
+    private static final String ATTRIBUTE_NAME_PASSWORD = "password";
+
+    private static final String PAGE_GREETING = "/WEB-INF/jsp/greeting.jsp";
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
@@ -19,9 +25,9 @@ public class CreateNewUserCommand implements Command {
 
         UserRegForm user = new UserRegForm();
 
-        user.setUsername(request.getParameter("username"));
-        user.setEmail(request.getParameter("email"));
-        user.setPassword(request.getParameter("password"));
+        user.setUsername(request.getParameter(ATTRIBUTE_NAME_USERNAME));
+        user.setEmail(request.getParameter(ATTRIBUTE_NAME_EMAIL));
+        user.setPassword(request.getParameter(ATTRIBUTE_NAME_PASSWORD));
 
 
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
@@ -31,7 +37,7 @@ public class CreateNewUserCommand implements Command {
 
             clientService.registration(user);
 
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/greeting.jsp");
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher(PAGE_GREETING);
             requestDispatcher.forward(request, response);
 
         } catch (ServletException e){

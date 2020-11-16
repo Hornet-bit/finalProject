@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShowAllTestsCommand implements Command {
+
+    private static final String PARAMETER_NAME_LIST_OF_TEST = "all_tests";
+    private static final String PAGE_SHOW_TESTS = "/WEB-INF/jsp/temp_show_tests.jsp";
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
 
@@ -24,11 +27,11 @@ public class ShowAllTestsCommand implements Command {
         List<BasicDescriptionTest> listOfQuestion= new ArrayList<>();
         listOfQuestion = testService.showAllTests();
 
-        request.setAttribute("all_tests", listOfQuestion);
+        request.setAttribute(PARAMETER_NAME_LIST_OF_TEST, listOfQuestion);
         //////////////////
 
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/temp_show_tests.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher(PAGE_SHOW_TESTS);
         dispatcher.forward(request, response);
     }
 }

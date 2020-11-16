@@ -9,8 +9,6 @@ import by.epamtc.birukov.service.ServiceException;
 import by.epamtc.birukov.service.ServiceProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.spi.LoggerContextFactory;
-
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,7 +20,7 @@ import java.io.IOException;
 
 public class AuthenticationCommand implements Command {
 
-//private static final Logger logger = LogManager.getLogger(AuthenticationCommand.class);
+//private static final Logger log = LogManager.getLogger();
 
     private static final String  PARAMETER_LOGIN = "username";
     private static final String  PARAMETER_PASSWORD = "password";
@@ -32,7 +30,7 @@ public class AuthenticationCommand implements Command {
     private static final String HELLO_PAGE = "/WEB-INF/jsp/hello.jsp";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response){
 
         String login;
         String password;
@@ -48,7 +46,7 @@ public class AuthenticationCommand implements Command {
 
         User user = null;
         String page = null;
-        AuthenticationData authenticationData;
+        AuthenticationData authenticationData = null;
         try {
 
             authenticationData = clientService.authentication(login, password);
@@ -70,16 +68,25 @@ public class AuthenticationCommand implements Command {
                 session.setAttribute("role", authenticationData.getUserRole());
             }
         } catch (ServiceException e){
-            page = ERROR_PAGE;
+//            page = ERROR_PAGE;
             e.printStackTrace();
-//            logger.debug(e);
 
-            throw new DAOException(e);
+//            log.debug(e);
+
+
 
             //todo log4j
         } finally {
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
-            requestDispatcher.forward(request, response);
+            try {
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
+                requestDispatcher.forward(request, response);
+            } catch (ServletException e){
+                e.printStackTrace();
+//                log.debug(e);
+            } catch (IOException e){
+                e.printStackTrace();
+//                log.debug(e);
+            }
         }
 
 

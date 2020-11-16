@@ -6,7 +6,6 @@ import by.epamtc.birukov.entity.User;
 import by.epamtc.birukov.service.ClientService;
 import by.epamtc.birukov.service.ServiceException;
 import by.epamtc.birukov.service.ServiceProvider;
-import by.epamtc.birukov.service.TestService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShowAllUsersCommand implements Command {
+
+    private static final String ATTRIBUTE_NAME_USER_LIST = "user_list";
+    private static final String PAGE_LIST_OF_USERS = "/WEB-INF/jsp/list_of_users.jsp";
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
@@ -29,9 +31,9 @@ public class ShowAllUsersCommand implements Command {
             //todo log
             e.printStackTrace();
         }
-        request.setAttribute("user_list", listOfUsers);
+        request.setAttribute(ATTRIBUTE_NAME_USER_LIST, listOfUsers);
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/list_of_users.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(PAGE_LIST_OF_USERS);
         requestDispatcher.forward(request, response);
     }
 }

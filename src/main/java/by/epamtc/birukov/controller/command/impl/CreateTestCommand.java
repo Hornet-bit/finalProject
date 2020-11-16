@@ -16,7 +16,8 @@ import java.io.IOException;
 //@MultipartConfig
 public class CreateTestCommand implements Command {
 
-    private static final String FILING_QUESTIONS = "/WEB-INF/jsp/includs/question.jsp";
+    private static final String PAGE_FILING_QUESTIONS = "/WEB-INF/jsp/includs/question.jsp";
+    private static final String PAGE_TEST_IS_CREATED = "/WEB-INF/jsp/test_is_created.jsp";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,12 +48,12 @@ public class CreateTestCommand implements Command {
             //todo log
         }
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/test_is_created.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(PAGE_TEST_IS_CREATED);
         requestDispatcher.forward(request, response);
 
 
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher(FILING_QUESTIONS);
-        dispatcher.forward(request, response);
+//        RequestDispatcher dispatcher = request.getRequestDispatcher(PAGE_FILING_QUESTIONS);
+//        dispatcher.forward(request, response);
     }
 }

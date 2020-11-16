@@ -1,10 +1,7 @@
 package by.epamtc.birukov.service;
 
 import by.epamtc.birukov.dao.DAOException;
-import by.epamtc.birukov.entity.BasicDescriptionTest;
-import by.epamtc.birukov.entity.Question;
-import by.epamtc.birukov.entity.RunTest;
-import by.epamtc.birukov.entity.Test;
+import by.epamtc.birukov.entity.*;
 
 import java.util.List;
 
@@ -19,4 +16,8 @@ public interface TestService {
     void appointTest(RunTest runTest) throws DAOException;
 
     List<BasicDescriptionTest> showMyTests(String login);
+
+    List<VerifiedAnswer> checkTest(Test test, String[] multipleSelectionAnswers, String[] singleSelectionAnswers);
+
+    double takeMarkForTest(List<VerifiedAnswer> verifiedAnswers);
 }

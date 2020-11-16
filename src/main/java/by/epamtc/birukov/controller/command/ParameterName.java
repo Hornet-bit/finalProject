@@ -1,13 +1,12 @@
 package by.epamtc.birukov.controller.command;
 
-public enum ParametrName {
+public enum ParameterName {
     CREATE_NEW_USER,
     AUTHORIZATION,
     GREETING,
     GO_TO_LOGIN,
     GO_TO_REGISTRATION,
-    CHANGE_LANGUAGE_RU,
-    CHANGE_LANGUAGE_EN,
+    CHANGE_LANGUAGE,
     GO_TO_SETTINGS,
     GO_TO_CREATE_TEST,
     CREATE_TEST,
@@ -20,5 +19,6 @@ public enum ParametrName {
     VIEW_ASSIGNED_TESTS,
     PASS_TEST,
     LOGOUT,
-    GO_TO_HALLO_PAGE
+    GO_TO_HALLO_PAGE,
+    SEND_ANSWERS
 }

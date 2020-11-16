@@ -3,7 +3,6 @@ package by.epamtc.birukov.dao.impl;
 import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.dao.UserDAO;
 import by.epamtc.birukov.entity.AuthenticationData;
-import by.epamtc.birukov.entity.BasicDescriptionTest;
 import by.epamtc.birukov.entity.User;
 import by.epamtc.birukov.entity.UserRegForm;
 
@@ -22,8 +21,10 @@ public class SQLUserDAO implements UserDAO {
 
     private static final String AUTHENTHCATION = "SELECT U.id, username, role FROM users U JOIN role R ON username = ? AND password= ? AND  U.role_id=R.id";
     private static final String AUTHORIZATION = "SELECT * FROM users U JOIN role R on username = ? AND  U.role_id=R.id";
-
+    private static final String SHOW_ALL_USERS = "SELECT U.id, username, role FROM users U JOIN role R on U.role_id=R.id";
     private static final ConnectionPool pool = ConnectionPool.getInstance();
+    private final static String INSERT_REGISTRATION_FORM = "INSERT INTO users(email, password, username, role_id) " +
+            "values(?, ?, ?,? )";
 
     @Override
     public AuthenticationData authentication(String login, String password) throws DAOException {
@@ -31,13 +32,12 @@ public class SQLUserDAO implements UserDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        User user = null;
+        AuthenticationData authenticationData = null;
 
-        connection = pool.getConnection();
-
-        AuthenticationData authenticationData = new AuthenticationData();
+        //todo почему не могу aud = null, не даёт зарегаться
 
         try {
+            connection = pool.getConnection();
 
             preparedStatement = connection.prepareStatement(AUTHENTHCATION);
 
@@ -47,26 +47,25 @@ public class SQLUserDAO implements UserDAO {
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-
-
-                authenticationData.setUsername(resultSet.getString("username"));
+                authenticationData = new AuthenticationData();
+                String username = resultSet.getString("username");
+                authenticationData.setUsername(username);
                 authenticationData.setId(resultSet.getInt("id"));
+                int i = resultSet.getInt("id");
                 authenticationData.setUserRole(resultSet.getString("role"));
 
-
-                user = new User();
-//                user.setUsername(resultSet.getString("username"));
-//                user = authorization(login);
-
-                //todo передать параметры
+            } else {
+                //todo log
+                System.out.println();
             }
 
         } catch (SQLException e) {
-            //todo log4j
             e.printStackTrace();
+            throw new DAOException(e);
+            //todo log4j
+
         } finally {
-            //todo close connectionPool
-            //close connection
+            pool.releaseConnection(connection);
         }
 
         return authenticationData;
@@ -84,10 +83,9 @@ public class SQLUserDAO implements UserDAO {
         try {
 
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO users(email, password, username, role_id) " +
-                    "values(?, ?, ?,? )";
 
-            preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement = connection.prepareStatement(INSERT_REGISTRATION_FORM);
 
             preparedStatement.setString(1, user.getEmail());
             preparedStatement.setString(2, user.getPassword());
@@ -100,7 +98,10 @@ public class SQLUserDAO implements UserDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            //todo log, выкинуть ДАОExep
+            throw new DAOException(e);
+            //todo log
+        } finally {
+            pool.releaseConnection(connection);
         }
 
         return true;
@@ -151,7 +152,7 @@ public class SQLUserDAO implements UserDAO {
 //        return user;
 //    }
 
-    private static final String SHOW_ALL_USERS = "SELECT U.id, username, role FROM users U JOIN role R on U.role_id=R.id";
+
 
     @Override
     public List<User> showAllUsers() throws DAOException {
@@ -179,6 +180,7 @@ public class SQLUserDAO implements UserDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DAOException(e);
             //todo log
         } finally {
             pool.releaseConnection(connection);
