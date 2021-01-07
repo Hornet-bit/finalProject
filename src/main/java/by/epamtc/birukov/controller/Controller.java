@@ -5,13 +5,14 @@ import by.epamtc.birukov.controller.command.CommandProvider;
 import by.epamtc.birukov.dao.DAOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-
+@MultipartConfig
 public class Controller extends HttpServlet {
     private static final String PARAMETER_NAME_COMMAND = "command";
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

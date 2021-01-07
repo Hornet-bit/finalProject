@@ -11,7 +11,7 @@ import java.util.List;
 public class SQLTestDAO implements TestDAO {
 
     private static final ConnectionPool pool = ConnectionPool.getInstance();
-    private static final String GET_ID_TEST = "SELECT id_test FROM tests WHERE name = ?";
+    private static final String GET_ID_TEST_BY_NAME = "SELECT id_test FROM tests WHERE name = ?";
     private static final String GET_TESTPARAM_BY_ID = "SELECT id_test, name, description FROM tests AS t WHERE t.id_test = ?";
     private final static String GET_QUESTION_FROM_TEST = "SELECT id, question, content FROM questions AS q WHERE q.id_test = ?";
     private final static String GET_ANSWER_FROM_QUESTION = "SELECT id_ans, content, result FROM answers AS ans WHERE ans.id_q = ?";
@@ -19,14 +19,16 @@ public class SQLTestDAO implements TestDAO {
     private final static String GET_TESTS_USER = "SELECT id_test FROM run_tests WHERE id_user = ?";
     private final static String GET_SHORT_INFO_TESTS_USER = "SELECT id_test, name, description FROM tests WHERE id_test = ?";
     private final static String SET_ID_TO_RUNTESTS = "INSERT INTO run_tests (test_id) values (?)";
-    private static final String INSERT_INTO_TESTS_TABLE = "INSERT INTO tests (name, description) values (?, ?)";
+    private static final String INSERT_INTO_TESTS_TABLE = "INSERT INTO tests (name, description, subjects_id) values (?, ?, ?)";
 
     @Override
     public void createTest(Test test) throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedTestId = null;
+        ResultSet subjIdResultSet = null;
         int idTest = 0;
+        int idSubject = 0;
 
         connection = pool.getConnection();
 
@@ -34,10 +36,19 @@ public class SQLTestDAO implements TestDAO {
         try {
             connection.setAutoCommit(false);
 //            String sql = "INSERT INTO tests (name, description) values (?, ?)";
+            preparedStatement = connection.prepareStatement(GET_ID_SUBJ_BY_NAME);
+            preparedStatement.setString(1, test.getSubjectName());
+            subjIdResultSet = preparedStatement.executeQuery();
+
+            if (subjIdResultSet.next()) {
+                idSubject = subjIdResultSet.getInt(1);
+            }
+
 
             preparedStatement = connection.prepareStatement(INSERT_INTO_TESTS_TABLE, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, test.getName());
             preparedStatement.setString(2, test.getDescription());
+            preparedStatement.setInt(3, idSubject);
 
             preparedStatement.executeUpdate();
 
@@ -61,7 +72,6 @@ public class SQLTestDAO implements TestDAO {
     }
 
 
-
     private void addIdToRunTests(int id) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -82,6 +92,7 @@ public class SQLTestDAO implements TestDAO {
     }
 
     private static final String INSERT_INTO_QUESTIONS_TABLE = "INSERT INTO questions (id_test, question) values (?, ?)";
+
     private void addQuestionToTable(Test test, int idTest) throws DAOException {
 
         int question = 0;
@@ -118,6 +129,7 @@ public class SQLTestDAO implements TestDAO {
     }
 
     private static final String INSERT_TO_ANSWERS_TABLE = "INSERT INTO answers (content, result, id_q) values (?,?,?)";
+
     private void addAnswerToTable(int idQuestion, int question, Test test) throws DAOException {
 
         Connection connection = null;
@@ -178,6 +190,7 @@ public class SQLTestDAO implements TestDAO {
     private static final String PARAMETER_NAME_ID_TEST = "id_test";
     private static final String PARAMETER_NAME_NAME = "name";
     private static final String PARAMETER_NAME_DESCRIPTION = "description";
+
     @Override
     public List<BasicDescriptionTest> showAllTestsName() throws DAOException {
 
@@ -363,9 +376,6 @@ public class SQLTestDAO implements TestDAO {
     }
 
 
-
-
-
     @Override
     public List<BasicDescriptionTest> showMyTests(String login) throws DAOException {
 
@@ -389,6 +399,7 @@ public class SQLTestDAO implements TestDAO {
 
         return listOfTests;
     }
+
 
     private BasicDescriptionTest getBasicTestInfoById(int id) {
         Connection connection = null;
@@ -478,5 +489,156 @@ public class SQLTestDAO implements TestDAO {
         return idUser;
 
     }
+
+    private static final String INSERT_SUBJECT = "INSERT INTO subjects(subject_name, description) values(?, ?)";
+
+    @Override
+    public void CreateSubject(Subject subject) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        connection = pool.getConnection();
+
+        try {
+
+            preparedStatement = connection.prepareStatement(INSERT_SUBJECT);
+            preparedStatement.setString(1, subject.getName());
+            preparedStatement.setString(2, subject.getDescription());
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            pool.releaseConnection(connection);
+        }
+    }
+
+    private static final String GET_SUBJECTS = "SELECT subject_name, description FROM subjects";
+
+    @Override
+    public List<Subject> showSubjects() throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        List<Subject> subjects = new ArrayList<>();
+        connection = pool.getConnection();
+
+        try {
+            preparedStatement = connection.prepareStatement(GET_SUBJECTS);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Subject subject = new Subject();
+                subject.setName(resultSet.getString("subject_name"));
+                subject.setDescription(resultSet.getString("description"));
+
+                subjects.add(subject);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return subjects;
+    }
+
+    private final static String GET_ID_SUBJ_BY_NAME = "SELECT id FROM subjects WHERE subject_name = ?";
+    private final static String GET_SHORT_INFO_TESTS_SUBJECT = "SELECT id_test, name, description FROM tests WHERE id_test = ?";
+
+    @Override
+    public List<BasicDescriptionTest> getTestsOfSubject(String subjectName) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        BasicDescriptionTest bdt = new BasicDescriptionTest();
+        try {
+            connection = pool.getConnection();
+            preparedStatement = connection.prepareStatement(GET_ID_SUBJ_BY_NAME);
+            preparedStatement.setString(1, subjectName);
+
+            resultSet = preparedStatement.executeQuery();
+
+
+            while (resultSet.next()) {
+
+                bdt.setId(resultSet.getInt("id_test"));
+                bdt.setName(resultSet.getString("name"));
+                bdt.setDescription(resultSet.getString("description"));
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private static final String DELETE_RECORD_FROM_RUN_TESTS = "DELETE FROM run_tests as r WHERE r.id_test = ? AND r.id_user = ?";
+
+    @Override
+    public void deleteAppointTest(int id_test, int id_user) {
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = pool.getConnection();
+            preparedStatement = connection.prepareStatement(DELETE_RECORD_FROM_RUN_TESTS);
+            preparedStatement.setInt(1, id_test);
+            preparedStatement.setInt(2, id_user);
+
+            preparedStatement.executeUpdate();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static final String INSERT_INTO_RESULT_TESTS_TABLE = "INSERT INTO result_tests (id_test, mark, finish_time) values (?,?, current_timestamp())";
+    private static final String INSERT_INTO_TABLE_USERS_RESULTS = "INSERT INTO users_result (users_id, result_tests_id) values (?,?)";
+
+    @Override
+    public void putMarkInJournal(int idUser, int idTest, int mark) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet generatedKey = null;
+        int idResult = 0;
+
+        try {
+            connection = pool.getConnection();
+            preparedStatement = connection.prepareStatement(INSERT_INTO_RESULT_TESTS_TABLE, Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatement.setInt(1, idTest);
+            preparedStatement.setInt(2, mark);
+
+//            preparedStatement.setInt(3, idSubject);
+
+            preparedStatement.executeUpdate();
+
+            generatedKey = preparedStatement.getGeneratedKeys();
+            if (generatedKey.next()) {
+                idResult = generatedKey.getInt(1);
+            }
+
+            preparedStatement = connection.prepareStatement(INSERT_INTO_TABLE_USERS_RESULTS);
+            preparedStatement.setInt(1, idUser);
+            preparedStatement.setInt(2, idResult);
+            preparedStatement.executeUpdate();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

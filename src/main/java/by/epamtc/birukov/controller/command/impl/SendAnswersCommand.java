@@ -1,6 +1,7 @@
 package by.epamtc.birukov.controller.command.impl;
 
 import by.epamtc.birukov.controller.command.Command;
+import by.epamtc.birukov.entity.AuthenticationData;
 import by.epamtc.birukov.entity.Test;
 import by.epamtc.birukov.entity.VerifiedAnswer;
 import by.epamtc.birukov.service.ServiceProvider;
@@ -42,9 +43,15 @@ public class SendAnswersCommand implements Command {
         List<VerifiedAnswer> verifiedAnswers = null;
         verifiedAnswers = testService.checkTest(test, multipleSelectionAnswers, singleSelectionAnswers);
         double mark = testService.takeMarkForTest(verifiedAnswers);
+        test.setResultTest((int)mark);
         request.setAttribute(ATTRIBUTE_NAME_MARK, mark);
-
         request.setAttribute(ATTRIBUTE_NAME_LIST_OF_VERIFIED_ANSWERS, verifiedAnswers);
+
+
+        AuthenticationData auth = (AuthenticationData) httpSession.getAttribute("user");
+        testService.putMarkInJournal(auth.getId(), test.getIdTest(), test.getResultTest());
+        testService.deleteAppointTest(test.getIdTest(), auth.getId());
+
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(PAGE_RESULT_TEST);
         requestDispatcher.forward(request, response);
 

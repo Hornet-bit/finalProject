@@ -18,5 +18,7 @@ public interface UserDAO {
 
     List<User> showAllUsers() throws DAOException;
 
+    void changeRole(String login) throws DAOException;
+
 
 }

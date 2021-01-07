@@ -7,8 +7,6 @@ import by.epamtc.birukov.entity.User;
 import by.epamtc.birukov.service.ClientService;
 import by.epamtc.birukov.service.ServiceException;
 import by.epamtc.birukov.service.ServiceProvider;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,7 +28,7 @@ public class AuthenticationCommand implements Command {
     private static final String HELLO_PAGE = "/WEB-INF/jsp/hello.jsp";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response){
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String login;
         String password;
@@ -40,9 +38,6 @@ public class AuthenticationCommand implements Command {
 
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
         ClientService clientService = serviceProvider.getClientService();
-
-
-///////////////работа с сессией
 
         User user = null;
         String page = null;
@@ -77,16 +72,11 @@ public class AuthenticationCommand implements Command {
 
             //todo log4j
         } finally {
-            try {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
                 requestDispatcher.forward(request, response);
-            } catch (ServletException e){
-                e.printStackTrace();
 //                log.debug(e);
-            } catch (IOException e){
-                e.printStackTrace();
 //                log.debug(e);
-            }
+
         }
 
 

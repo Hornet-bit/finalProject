@@ -30,6 +30,14 @@ public class CommandProvider {
         commands.put(ParameterName.GO_TO_HALLO_PAGE, new GoToHalloPageCommand());
         commands.put(ParameterName.SEND_ANSWERS, new SendAnswersCommand());
         commands.put(ParameterName.CHANGE_LANGUAGE, new ChangeLanguageCommand());
+        commands.put(ParameterName.UPLOAD_IMAGE, new UploadImageCommand());
+        commands.put(ParameterName.CHANGE_ROLE, new ChangeRoleCommand());
+        commands.put(ParameterName.GO_TO_CREATE_SUBJECT, new GoToCreateSubject());
+        commands.put(ParameterName.CREATE_NEW_SUBJECT, new CreateSubjectCommand());
+        commands.put(ParameterName.SHOW_SUBJECTS, new ShowSubjectsCommand());
+        commands.put(ParameterName.SUBJ_DETAILS, new SubjectDetailsCommand());
+        commands.put(ParameterName.SHOW_JOURNAL, new ShowJournalCommand());
+
     }
 
     public Command getCommand(String commandName){

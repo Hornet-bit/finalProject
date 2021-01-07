@@ -2,6 +2,7 @@ package by.epamtc.birukov.dao;
 
 import by.epamtc.birukov.entity.BasicDescriptionTest;
 import by.epamtc.birukov.entity.RunTest;
+import by.epamtc.birukov.entity.Subject;
 import by.epamtc.birukov.entity.Test;
 
 import java.util.List;
@@ -24,5 +25,15 @@ public interface TestDAO {
     void appointTest(RunTest runTest) throws DAOException;
 
     List<BasicDescriptionTest> showMyTests(String login) throws DAOException;
+
+    void CreateSubject(Subject subject) throws DAOException;
+
+    List<Subject> showSubjects() throws DAOException;
+
+    public List<BasicDescriptionTest> getTestsOfSubject(String subjectName) throws DAOException;
+
+    void deleteAppointTest(int id_test, int id_user);
+
+    public void putMarkInJournal(int idUser, int idTest, int mark);
 
 }

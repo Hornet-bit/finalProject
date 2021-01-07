@@ -5,6 +5,8 @@
 <html lang="en">
 
 <head>
+    <c:set var="page" scope="session" value="greeting.jsp"/>
+
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="/localization.MessagesBundle" var="loc"/>
     <fmt:message bundle="${loc}" key="local.message" var="message"/>
@@ -65,7 +67,6 @@
             </div>
         </div>
     </div>
-    <c:out value="${message}"/>
 
 </main>
 </body>

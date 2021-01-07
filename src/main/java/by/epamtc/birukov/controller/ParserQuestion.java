@@ -18,6 +18,7 @@ public class ParserQuestion {
         Test test = new Test();
         test.setName(request.getParameter("test_name"));
         test.setDescription(request.getParameter("test_description"));
+        test.setSubjectName(request.getParameter("subj_name"));
 
 
         for (int i = 0, k = 1; i < countOfQuestion; i++) {

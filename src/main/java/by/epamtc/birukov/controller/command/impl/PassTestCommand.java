@@ -22,17 +22,18 @@ public class PassTestCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
 
+        HttpSession httpSession = request.getSession();
+
         request.setCharacterEncoding(CHARACTER_ENCODING);
 
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
         TestService testService = serviceProvider.getTestService();
 
         int idTest = Integer.parseInt(request.getParameter(ATTRIBUTE_NAME_RADIOBUTTON));
+        System.out.println(idTest);
         Test test;
         test = testService.showTestById(idTest);
 
-//        request.setAttribute("test", test);
-        HttpSession httpSession = request.getSession();
         httpSession.setAttribute(ATTRIBUTE_NAME_TEST, test);
 
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(PAGE_PASS_TEST);

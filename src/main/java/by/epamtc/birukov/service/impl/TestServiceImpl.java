@@ -4,6 +4,7 @@ import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.dao.DAOProvider;
 import by.epamtc.birukov.dao.TestDAO;
 import by.epamtc.birukov.entity.*;
+import by.epamtc.birukov.service.ServiceException;
 import by.epamtc.birukov.service.TestService;
 
 import java.util.ArrayList;
@@ -114,9 +115,12 @@ public class TestServiceImpl implements TestService {
             }
         }
 
-        double result = rightAnswer/totalAnswers;
+        double result = rightAnswer/totalAnswers * 100;
         return result;
+
     }
+
+
 
     private void checkMultipleAnswer(Test test, String[] multipleSelectionAnswers, int numQuestion, List<VerifiedAnswer> listOfVerifiedAnswers) {
 
@@ -183,4 +187,66 @@ public class TestServiceImpl implements TestService {
 
         listOfVerifiedAnswers.add(verifiedAnswer);
     }
+
+
+    @Override
+    public void createSubject(Subject subject) {
+
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        TestDAO sqlTestDAO = daoProvider.getTestDAO();
+
+        try {
+            sqlTestDAO.CreateSubject(subject);
+        } catch (DAOException e){
+//            new ServiceException(e)
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public List<Subject> showSubjects() {
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        TestDAO sqlTestDAO = daoProvider.getTestDAO();
+
+        List<Subject> subjects = new ArrayList<>();
+        try {
+            subjects = sqlTestDAO.showSubjects();
+        } catch (DAOException e){
+            e.printStackTrace();
+        }
+        return subjects;
+    }
+
+    @Override
+    public List<BasicDescriptionTest> getTestsOfSubject(String subjectName) {
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        TestDAO sqlTestDAO = daoProvider.getTestDAO();
+
+        List<BasicDescriptionTest> bdt = new ArrayList<>();
+        try {
+            bdt = sqlTestDAO.getTestsOfSubject(subjectName);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        return bdt;
+    }
+
+    @Override
+    public void deleteAppointTest(int id_test, int id_user) {
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        TestDAO sqlTestDAO = daoProvider.getTestDAO();
+
+        sqlTestDAO.deleteAppointTest(id_test, id_user);
+    }
+
+    @Override
+    public void putMarkInJournal(int idUser, int idTest, int mark) {
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        TestDAO sqlTestDAO = daoProvider.getTestDAO();
+
+        sqlTestDAO.putMarkInJournal(idUser, idTest, mark);
+    }
+
+
 }

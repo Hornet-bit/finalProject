@@ -16,7 +16,7 @@ import java.util.List;
 
 public class SQLUserDAO implements UserDAO {
 
-    private static final String DEFAULT_ROLE = "4";
+    private static final String DEFAULT_ROLE = "8";
     //todo баг sql
 
     private static final String AUTHENTHCATION = "SELECT U.id, username, role FROM users U JOIN role R ON username = ? AND password= ? AND  U.role_id=R.id";
@@ -153,7 +153,6 @@ public class SQLUserDAO implements UserDAO {
 //    }
 
 
-
     @Override
     public List<User> showAllUsers() throws DAOException {
         Connection connection = null;
@@ -164,7 +163,6 @@ public class SQLUserDAO implements UserDAO {
         List<User> listOfUsers = new ArrayList<>();
 
         try {
-
 
             preparedStatement = connection.prepareStatement(SHOW_ALL_USERS);
             resultSet = preparedStatement.executeQuery();
@@ -186,6 +184,103 @@ public class SQLUserDAO implements UserDAO {
             pool.releaseConnection(connection);
         }
         return listOfUsers;
+    }
+
+    private final static String GET_ROLE_BY_USERNAME = "SELECT role_id FROM users WHERE username = ?";
+    private final static String CHANGE_ROLE = "";
+    private static final String ADMIN_ROLE = "7";
+
+    @Override
+    public void changeRole(String login) throws DAOException {
+
+        int role = getRole(login);
+        if (role == Integer.parseInt(ADMIN_ROLE)) {
+            makeAnUser(login);
+        } else if (role == Integer.parseInt(DEFAULT_ROLE)) {
+            makeAnAdmin(login);
+        }
+
+
+    }
+
+    private int getRole(String login) {
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        int roleId = 0;
+        try {
+
+            connection = pool.getConnection();
+            preparedStatement = connection.prepareStatement(GET_ROLE_BY_USERNAME);
+            preparedStatement.setString(1, login);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                roleId = resultSet.getInt("role_id");
+            }
+
+        } catch (DAOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            pool.releaseConnection(connection);
+        }
+        return roleId;
+    }
+
+
+
+    private void makeAnAdmin(String login) {
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+
+            connection = pool.getConnection();
+            preparedStatement = connection.prepareStatement(MAKE_AN_USER);
+            preparedStatement.setInt(1, Integer.parseInt(ADMIN_ROLE));
+            preparedStatement.setString(2, login);
+
+            preparedStatement.executeUpdate();
+
+        } catch (DAOException e){
+            e.printStackTrace();
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            pool.releaseConnection(connection);
+        }
+    }
+
+    private static final String MAKE_AN_USER = "UPDATE users SET role_id = ? WHERE username = ?";
+
+    private void makeAnUser(String login) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+
+        try {
+
+            connection = pool.getConnection();
+            preparedStatement = connection.prepareStatement(MAKE_AN_USER);
+            preparedStatement.setInt(1, Integer.parseInt(DEFAULT_ROLE));
+//            preparedStatement.setString(1, ADMIN_ROLE);
+            preparedStatement.setString(2, login);
+
+            preparedStatement.executeUpdate();
+        } catch (DAOException e){
+            e.printStackTrace();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            pool.releaseConnection(connection);
+        }
     }
 
 

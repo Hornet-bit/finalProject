@@ -20,4 +20,15 @@ public interface TestService {
     List<VerifiedAnswer> checkTest(Test test, String[] multipleSelectionAnswers, String[] singleSelectionAnswers);
 
     double takeMarkForTest(List<VerifiedAnswer> verifiedAnswers);
+
+    void createSubject(Subject subject);
+
+    List<Subject> showSubjects();
+
+    List<BasicDescriptionTest> getTestsOfSubject(String subjectName);
+
+    void deleteAppointTest(int id_test, int id_user);
+
+    void  putMarkInJournal(int idUser, int idTest, int mark);
+
 }

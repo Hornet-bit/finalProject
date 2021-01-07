@@ -11,19 +11,18 @@
     <c:import url="header.jsp"/>
 </head>
 <body>
-<h1>Тут список пользователей</h1>
+<h1>Предметы:</h1>
+
 <c:set var="i" scope="page" value="0"></c:set>
 <form action="controller" method="post">
-    <c:forEach var="user" items="${user_list}">
+    <c:forEach var="subj" items="${subjects}">
         <fieldset>
-<%--            <c:out value="${i = i+ 1}"/>--%>
-            <c:out value="${user.username}"/>
-            <c:out value="${user.role}"/>
-<%--            <input type="checkbox" name="set_check${i}" value="${user.userId}">--%>
-            <button value="${user.username}" name="username">кнопка</button>
+            <c:out value="${subj.name}"/>
+<%--            <c:out value="${subj.description}"/>--%>
+            <button value="${subj.name}" name="subj_name">детальнее</button>
 
 
-            <input type="hidden" name="command" value="change_role">
+            <input type="hidden" name="command" value="subj_details">
                 <%--        <c:out value="${user.userId}"/>--%>
                 <%--            ${i = i + 1}--%>
 
@@ -31,5 +30,6 @@
     </c:forEach>
 
 </form>
+
 </body>
 </html>

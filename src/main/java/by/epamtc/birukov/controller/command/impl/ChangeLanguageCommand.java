@@ -12,15 +12,22 @@ import java.io.IOException;
 public class ChangeLanguageCommand implements Command {
 
     private static final String ATTRIBUTE_NAME_LOCALE = "local";
-    private static final String PAGE_GREETING = "/WEB-INF/jsp/greeting.jsp";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        String PATH = "/WEB-INF/jsp/";
+
         HttpSession session = request.getSession();
         session.setAttribute(ATTRIBUTE_NAME_LOCALE, request.getParameter(ATTRIBUTE_NAME_LOCALE));
 
-        request.getRequestDispatcher(PAGE_GREETING).forward(request, response);
+        String page = (String) session.getAttribute("page");
+        PATH+=page;
+
+        request.getRequestDispatcher(PATH).forward(request, response);
+
+//        response.sendRedirect("/WEB-INF/index.jsp");
+//        response.sendRedirect(request.getContextPath()+ "/temp_show_tests.jsp");
 
 
     }

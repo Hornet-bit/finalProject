@@ -3,6 +3,10 @@
 <html>
 <head>
     <c:import url="header.jsp"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
     <title>Create u own test</title>
 
 </head>
@@ -88,6 +92,14 @@
 
 
 <form action="controller">
+
+    <select name="subj_name">
+        <c:forEach var="subj" items="${subjects}">
+            <option>
+            <c:out value="${subj.name}"/>
+            </option>
+        </c:forEach>
+    </select>
 
     <input type="text" name="test_name" placeholder="имя теста" autocomplete="off">
     <input type="text" name="test_description" placeholder="описание теста" autocomplete="off">

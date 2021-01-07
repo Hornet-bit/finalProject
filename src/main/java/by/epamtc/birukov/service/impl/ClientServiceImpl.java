@@ -93,4 +93,17 @@ public class ClientServiceImpl implements ClientService {
         return listOfUsers;
     }
 
+    @Override
+    public void changeRole(String login) throws ServiceException {
+
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        UserDAO userDAO = daoProvider.getUserDAO();
+
+        try {
+            userDAO.changeRole(login);
+        } catch (DAOException e){
+            e.printStackTrace();
+        }
+    }
+
 }

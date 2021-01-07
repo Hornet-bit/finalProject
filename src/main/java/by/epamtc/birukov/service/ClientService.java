@@ -1,9 +1,6 @@
 package by.epamtc.birukov.service;
 
-import by.epamtc.birukov.entity.AuthenticationData;
-import by.epamtc.birukov.entity.BasicDescriptionTest;
-import by.epamtc.birukov.entity.User;
-import by.epamtc.birukov.entity.UserRegForm;
+import by.epamtc.birukov.entity.*;
 
 import java.util.List;
 
@@ -16,5 +13,9 @@ public interface ClientService {
     User getSettings(String login) throws ServiceException;
 
     List<User> showAllUsers() throws ServiceException;
+
+    void changeRole(String login) throws ServiceException;
+
+
 
 }

@@ -17,6 +17,26 @@ public class Test {
     private int countOfQuestion;
     private int idTest;
 
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    private String subjectName;
+
+    private int subjectId;
+
+    public int getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(int subjectId) {
+        this.subjectId = subjectId;
+    }
+
     public int getIdTest() {
         return idTest;
     }

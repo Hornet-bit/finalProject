@@ -1,9 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!doctype html>
 <html lang="en">
 
 <head>
+    <fmt:setLocale value="${sessionScope.local}"/>
+    <fmt:setBundle basename="/localization.MessagesBundle" var="loc"/>
+    <fmt:message bundle="${loc}" key="label.nickname" var="nickname"/>
+    <fmt:message bundle="${loc}" key="label.password" var="password"/>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -29,11 +34,11 @@
     <form>
         <input type="hidden" name="command" value="authorization">
         <div class="form-group">
-            <label for="exampleInputEmail1">Nickname</label>
+            <label for="exampleInputEmail1">${nickname}</label>
             <input type="text" class="form-control" id="exampleInputEmail1" name="username" aria-describedby="emailHelp" placeholder="Enter nickname" required autocomplete="off">
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
+            <label for="exampleInputPassword1">${password}</label>
             <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password" required>
         </div>
         <input type="submit" class="btn btn-outline-info" value="Login">
