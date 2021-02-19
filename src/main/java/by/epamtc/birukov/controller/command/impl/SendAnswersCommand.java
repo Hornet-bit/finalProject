@@ -4,6 +4,7 @@ import by.epamtc.birukov.controller.command.Command;
 import by.epamtc.birukov.entity.AuthenticationData;
 import by.epamtc.birukov.entity.Test;
 import by.epamtc.birukov.entity.VerifiedAnswer;
+import by.epamtc.birukov.service.ServiceException;
 import by.epamtc.birukov.service.ServiceProvider;
 import by.epamtc.birukov.service.TestService;
 
@@ -24,6 +25,7 @@ public class SendAnswersCommand implements Command {
     private static final String ATTRIBUTE_NAME_LIST_OF_VERIFIED_ANSWERS = "answers";
     private static final String PAGE_RESULT_TEST = "/WEB-INF/jsp/result_test.jsp";
     private static final String ATTRIBUTE_NAME_MARK = "mark";
+    private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -41,18 +43,24 @@ public class SendAnswersCommand implements Command {
         TestService testService = serviceProvider.getTestService();
 
         List<VerifiedAnswer> verifiedAnswers = null;
-        verifiedAnswers = testService.checkTest(test, multipleSelectionAnswers, singleSelectionAnswers);
-        double mark = testService.takeMarkForTest(verifiedAnswers);
-        test.setResultTest((int)mark);
-        request.setAttribute(ATTRIBUTE_NAME_MARK, mark);
-        request.setAttribute(ATTRIBUTE_NAME_LIST_OF_VERIFIED_ANSWERS, verifiedAnswers);
+        String page = PAGE_RESULT_TEST;
 
+        try {
+            verifiedAnswers = testService.checkTest(test, multipleSelectionAnswers, singleSelectionAnswers);
+            double mark = testService.takeMarkForTest(verifiedAnswers);
+            test.setResultTest((int) mark);
 
-        AuthenticationData auth = (AuthenticationData) httpSession.getAttribute("user");
-        testService.putMarkInJournal(auth.getId(), test.getIdTest(), test.getResultTest());
-        testService.deleteAppointTest(test.getIdTest(), auth.getId());
+            request.setAttribute(ATTRIBUTE_NAME_MARK, mark);
+            request.setAttribute(ATTRIBUTE_NAME_LIST_OF_VERIFIED_ANSWERS, verifiedAnswers);
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(PAGE_RESULT_TEST);
+            AuthenticationData auth = (AuthenticationData) httpSession.getAttribute("user");
+            testService.putMarkInJournal(auth.getId(), test.getIdTest(), test.getResultTest());
+            testService.deleteAppointTest(test.getIdTest(), auth.getId());
+        } catch (ServiceException e){
+            page = ERROR_PAGE;
+        }
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
         requestDispatcher.forward(request, response);
 
 

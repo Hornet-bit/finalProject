@@ -2,6 +2,7 @@ package by.epamtc.birukov.service;
 
 import by.epamtc.birukov.entity.*;
 
+import javax.servlet.http.Part;
 import java.util.List;
 
 public interface ClientService {
@@ -16,6 +17,7 @@ public interface ClientService {
 
     void changeRole(String login) throws ServiceException;
 
+    String uploadAvatar(AuthenticationData user, Part filePart) throws ServiceException;
 
-
+    List<UserAcademicPerformance> showJournal(String testName) throws ServiceException;
 }

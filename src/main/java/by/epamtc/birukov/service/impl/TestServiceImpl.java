@@ -15,17 +15,20 @@ import java.util.List;
 public class TestServiceImpl implements TestService {
 
     @Override
-    public void createTest(Test test) throws DAOException {
+    public void createTest(Test test) throws ServiceException {
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         TestDAO sqlTestDAO = daoProvider.getTestDAO();
 
-        sqlTestDAO.createTest(test);
-
+        try {
+            sqlTestDAO.createTest(test);
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
     }
 
     @Override
-    public List showAllTests() {
+    public List showAllTests() throws ServiceException {
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         TestDAO sqlTestDAO = daoProvider.getTestDAO();
@@ -36,36 +39,42 @@ public class TestServiceImpl implements TestService {
 
             listOfTests = sqlTestDAO.showAllTestsName();
         } catch (DAOException e) {
-            e.printStackTrace();
+            throw new ServiceException(e);
         }
 
         return listOfTests;
     }
 
     @Override
-    public Test showTestById(int id) throws DAOException {
+    public Test showTestById(int id) throws ServiceException {
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         TestDAO sqlTestDAO = daoProvider.getTestDAO();
 
         Test test = new Test();
-        test = sqlTestDAO.showTestById(id);
-
+        try {
+            test = sqlTestDAO.showTestById(id);
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
         return test;
     }
 
     @Override
-    public void appointTest(RunTest runTest) throws DAOException {
+    public void appointTest(RunTest runTest) throws ServiceException {
         DAOProvider daoProvider = DAOProvider.getInstance();
         TestDAO sqlTestDAO = daoProvider.getTestDAO();
 
-        sqlTestDAO.appointTest(runTest);
-
+        try {
+            sqlTestDAO.appointTest(runTest);
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
 
     }
 
     @Override
-    public List<BasicDescriptionTest> showMyTests(String login) {
+    public List<BasicDescriptionTest> showMyTests(String login) throws ServiceException {
         DAOProvider daoProvider = DAOProvider.getInstance();
         TestDAO sqlTestDAO = daoProvider.getTestDAO();
 
@@ -73,14 +82,14 @@ public class TestServiceImpl implements TestService {
         try {
             bdt = sqlTestDAO.showMyTests(login);
         } catch (DAOException e) {
-            e.printStackTrace();
+            throw new ServiceException(e);
         }
 
         return bdt;
     }
 
     @Override
-    public List<VerifiedAnswer> checkTest(Test test, String[] multipleSelectionAnswers, String[] singleSelectionAnswers) {
+    public List<VerifiedAnswer> checkTest(Test test, String[] multipleSelectionAnswers, String[] singleSelectionAnswers) throws ServiceException{
 
         List<String> listOfSingleUserAnswers = new ArrayList<>();
 
@@ -104,7 +113,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public double takeMarkForTest(List<VerifiedAnswer> verifiedAnswers) {
+    public double takeMarkForTest(List<VerifiedAnswer> verifiedAnswers) throws ServiceException{
         double totalAnswers = verifiedAnswers.size();
         double rightAnswer = 0;
 
@@ -190,7 +199,7 @@ public class TestServiceImpl implements TestService {
 
 
     @Override
-    public void createSubject(Subject subject) {
+    public void createSubject(Subject subject) throws ServiceException{
 
         DAOProvider daoProvider = DAOProvider.getInstance();
         TestDAO sqlTestDAO = daoProvider.getTestDAO();
@@ -198,14 +207,13 @@ public class TestServiceImpl implements TestService {
         try {
             sqlTestDAO.CreateSubject(subject);
         } catch (DAOException e){
-//            new ServiceException(e)
-            e.printStackTrace();
+            throw new ServiceException(e);
         }
 
     }
 
     @Override
-    public List<Subject> showSubjects() {
+    public List<Subject> showSubjects() throws ServiceException{
         DAOProvider daoProvider = DAOProvider.getInstance();
         TestDAO sqlTestDAO = daoProvider.getTestDAO();
 
@@ -213,13 +221,13 @@ public class TestServiceImpl implements TestService {
         try {
             subjects = sqlTestDAO.showSubjects();
         } catch (DAOException e){
-            e.printStackTrace();
+            throw new ServiceException(e);
         }
         return subjects;
     }
 
     @Override
-    public List<BasicDescriptionTest> getTestsOfSubject(String subjectName) {
+    public List<BasicDescriptionTest> getTestsOfSubject(String subjectName) throws ServiceException{
         DAOProvider daoProvider = DAOProvider.getInstance();
         TestDAO sqlTestDAO = daoProvider.getTestDAO();
 
@@ -227,25 +235,34 @@ public class TestServiceImpl implements TestService {
         try {
             bdt = sqlTestDAO.getTestsOfSubject(subjectName);
         } catch (DAOException e) {
-            e.printStackTrace();
+            throw new ServiceException(e);
         }
         return bdt;
     }
 
     @Override
-    public void deleteAppointTest(int id_test, int id_user) {
+    public void deleteAppointTest(int id_test, int id_user) throws ServiceException{
         DAOProvider daoProvider = DAOProvider.getInstance();
         TestDAO sqlTestDAO = daoProvider.getTestDAO();
 
-        sqlTestDAO.deleteAppointTest(id_test, id_user);
+        try {
+            sqlTestDAO.deleteAppointTest(id_test, id_user);
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
     }
 
     @Override
-    public void putMarkInJournal(int idUser, int idTest, int mark) {
+    public void putMarkInJournal(int idUser, int idTest, int mark) throws ServiceException{
+        //todo валидация
         DAOProvider daoProvider = DAOProvider.getInstance();
         TestDAO sqlTestDAO = daoProvider.getTestDAO();
 
-        sqlTestDAO.putMarkInJournal(idUser, idTest, mark);
+        try {
+            sqlTestDAO.putMarkInJournal(idUser, idTest, mark);
+        } catch (DAOException e){
+            throw new ServiceException(e);
+        }
     }
 
 

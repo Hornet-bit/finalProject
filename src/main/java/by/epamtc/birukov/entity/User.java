@@ -11,8 +11,16 @@ public class User {
     private String surname;
     private String middleName;
     private String role;
+    private String avatarPath;
 
-    //todo постаратья избавиться от пароля и логина
+    public String getAvatarPath() {
+        return avatarPath;
+    }
+
+    public void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath;
+    }
+//todo постаратья избавиться от пароля и логина
 
     public User() {
     }

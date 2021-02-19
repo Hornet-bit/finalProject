@@ -4,9 +4,12 @@ import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.dao.UserDAO;
 import by.epamtc.birukov.entity.AuthenticationData;
 import by.epamtc.birukov.entity.User;
+import by.epamtc.birukov.entity.UserAcademicPerformance;
 import by.epamtc.birukov.entity.UserRegForm;
 
 
+import javax.servlet.http.Part;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,7 +37,6 @@ public class SQLUserDAO implements UserDAO {
         ResultSet resultSet = null;
         AuthenticationData authenticationData = null;
 
-        //todo почему не могу aud = null, не даёт зарегаться
 
         try {
             connection = pool.getConnection();
@@ -191,7 +193,7 @@ public class SQLUserDAO implements UserDAO {
     private static final String ADMIN_ROLE = "7";
 
     @Override
-    public void changeRole(String login) throws DAOException {
+    public void changeRole(String login) throws DAOException {//не выкидываю exep
 
         int role = getRole(login);
         if (role == Integer.parseInt(ADMIN_ROLE)) {
@@ -202,6 +204,7 @@ public class SQLUserDAO implements UserDAO {
 
 
     }
+
 
     private int getRole(String login) {
 
@@ -225,13 +228,11 @@ public class SQLUserDAO implements UserDAO {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             pool.releaseConnection(connection);
         }
         return roleId;
     }
-
 
 
     private void makeAnAdmin(String login) {
@@ -248,9 +249,9 @@ public class SQLUserDAO implements UserDAO {
 
             preparedStatement.executeUpdate();
 
-        } catch (DAOException e){
+        } catch (DAOException e) {
             e.printStackTrace();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             pool.releaseConnection(connection);
@@ -273,14 +274,87 @@ public class SQLUserDAO implements UserDAO {
             preparedStatement.setString(2, login);
 
             preparedStatement.executeUpdate();
-        } catch (DAOException e){
+        } catch (DAOException e) {
             e.printStackTrace();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             pool.releaseConnection(connection);
         }
+    }
+
+    private static final String AVATAR_IMAGE_PATH_ON_SERVER = "c:\\Users\\hp\\Desktop\\EpamProj\\TestSystemFinish\\web\\img\\avatars\\";
+    private static final String UPDATE_AVATAR = "UPDATE users SET avatar = ? WHERE id = ?";
+
+    @Override
+    public String uploadAvatar(AuthenticationData user, Part filePart) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        String imageName = user.getUsername() + "_avatar." + filePart.getContentType().split("/")[1];
+        String locationImage = null;
+        String relative = null;
+        try {
+
+            File oldImage = new File("c:\\Users\\hp\\Desktop\\EpamProj\\TestSystemFinish\\web\\img\\avatars\\");
+            oldImage.delete();
+
+            InputStream fileContent = filePart.getInputStream();
+            byte[] array = fileContent.readAllBytes();
+
+//            String workingDir = System.getProperty("web/img/avatars");
+
+            String base = "c:" + File.separator + "Users" + File.separator + "hp\\Desktop\\EpamProj\\TestSystemFinish\\web";
+            relative = new File(base).toURI().relativize(new File(AVATAR_IMAGE_PATH_ON_SERVER).toURI()).getPath();
+
+            File targetFile = new File( AVATAR_IMAGE_PATH_ON_SERVER+ File.separator + imageName);
+//            System.out.println(targetFile.getPath());
+            OutputStream outStream = new FileOutputStream(targetFile);
+            outStream.write(array);
+
+            connection = pool.getConnection();
+            preparedStatement = connection.prepareStatement(UPDATE_AVATAR);
+            preparedStatement.setString(1, relative + imageName);
+            preparedStatement.setInt(2, user.getId());
+
+            preparedStatement.executeUpdate();
+            locationImage = relative + imageName;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DAOException(e);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new DAOException(e);
+        } finally {
+            pool.releaseConnection(connection);
+        }
+        System.out.println(locationImage);
+        return locationImage;
+    }
+
+    private static final String GET_JOURNAL= "";
+    @Override
+    public List<UserAcademicPerformance> showJournal(String testName) throws DAOException {
+/*
+получить все id тестов и их названия у выбранного предмета
+получить id всех пользователей,
+обратиться к таблице users_result и узнать id результатов
+обратиться к result_tests, определить id теста и взять последнюю запись
+   */
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        connection = pool.getConnection();
+
+        try {
+            preparedStatement = connection.prepareStatement(GET_JOURNAL);
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw new DAOException(e);
+        }
+        return null;
     }
 
 

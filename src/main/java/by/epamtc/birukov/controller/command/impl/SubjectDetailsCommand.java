@@ -13,9 +13,10 @@ import java.io.IOException;
 
 public class SubjectDetailsCommand implements Command {
     private static final String PAGE_DETAILS_SUBJECT = "WEB-INF/jsp/subject_details.jsp";
+    private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
     private static final String PARAM_SUBJ_NAME = "subj_name";
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String subject = request.getParameter(PARAM_SUBJ_NAME);
 

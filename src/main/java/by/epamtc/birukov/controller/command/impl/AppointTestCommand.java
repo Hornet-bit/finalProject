@@ -3,6 +3,7 @@ package by.epamtc.birukov.controller.command.impl;
 import by.epamtc.birukov.controller.command.Command;
 import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.entity.RunTest;
+import by.epamtc.birukov.service.ServiceException;
 import by.epamtc.birukov.service.ServiceProvider;
 import by.epamtc.birukov.service.TestService;
 import javax.servlet.RequestDispatcher;
@@ -19,6 +20,7 @@ public class AppointTestCommand implements Command {
     private static final String CHECK_NAME_ATTRIBUTE = "set_check";
 
     private static final String PAGE_TEST_WAS_APPOINT = "/WEB-INF/jsp/test_was_appoint.jsp";
+    private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
@@ -47,9 +49,14 @@ public class AppointTestCommand implements Command {
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
         TestService testService = serviceProvider.getTestService();
 
-        testService.appointTest(runTest);
+        String page = PAGE_TEST_WAS_APPOINT;
+        try {
+            testService.appointTest(runTest);
+        } catch (ServiceException e){
+            page = ERROR_PAGE;
+        }
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(PAGE_TEST_WAS_APPOINT);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
         requestDispatcher.forward(request, response);
 
     }

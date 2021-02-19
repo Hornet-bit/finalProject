@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ShowJournalCommand implements Command {
+    private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
 

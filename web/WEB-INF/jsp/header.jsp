@@ -12,10 +12,16 @@
 
 <%--<img src="file:///C:/Users/hp/Desktop/EpamProj/TestSystemFinish/web/img/1.jpg" alt="picture"/>--%>
 
+<style>
+    .round {
+        border-radius: 100px; /* Радиус скругления */
+        border: 1px solid slateblue; /* Параметры рамки */
+        box-shadow: 0 0 7px #666; /* Параметры тени */
+    }
+</style>
 
    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
-       <img src="img/1.jpg" width="50" height="50" alt="pict"/>
-    <!--           TODO поправить отображение юзера в навбаре-->
+       <img src="${sessionScope.pa}" width="50" height="50" alt="pict" class="round"/>
     <!--           <%--<c:redirect url="hello.jsp"/>--%>-->
     <c:out value="${user.username}" default="ничего"/>
     <c:out value="${user.userRole}"/>
@@ -44,3 +50,7 @@
         </form>
     </div>
 </nav>
+<%--<script>--%>
+<%--    window.opener.location.href = "header.jsp";--%>
+<%--    window.close();--%>
+<%--</script>--%>

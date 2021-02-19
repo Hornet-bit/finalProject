@@ -13,6 +13,9 @@ import java.io.IOException;
 
 public class GoToSettingsCommand implements Command {
     private static final String PARAMETER_SEARCH = "login";
+    private static final String SETTINGS_PAGE = "/WEB-INF/jsp/settings.jsp";
+    private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -20,20 +23,15 @@ public class GoToSettingsCommand implements Command {
         ClientService clientService = serviceProvider.getClientService();
 
         User user = null;
+
+        String page= SETTINGS_PAGE;
         try {
             user = clientService.getSettings(request.getParameter(PARAMETER_SEARCH));
-            request.setAttribute("user", user);
-            request.getRequestDispatcher("/WEB-INF/jsp/settings.jsp").forward(request, response);
-
-        } catch (ServletException e){
-            e.printStackTrace();
-        } catch (IOException e){
-            e.printStackTrace();
         } catch (ServiceException e){
-            e.printStackTrace();
-            //log
-            //todo возможно выброс еррор страницы
-
+            page = ERROR_PAGE;
         }
+
+        request.setAttribute("user", user);
+        request.getRequestDispatcher(page).forward(request, response);
     }
 }

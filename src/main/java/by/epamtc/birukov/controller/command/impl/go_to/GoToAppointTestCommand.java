@@ -1,9 +1,6 @@
 package by.epamtc.birukov.controller.command.impl.go_to;
 
 import by.epamtc.birukov.controller.command.Command;
-import by.epamtc.birukov.dao.DAOException;
-import by.epamtc.birukov.entity.BasicDescriptionTest;
-import by.epamtc.birukov.entity.RunTest;
 import by.epamtc.birukov.entity.User;
 import by.epamtc.birukov.service.ClientService;
 import by.epamtc.birukov.service.ServiceException;
@@ -20,8 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GoToAppointTestCommand implements Command {
+    private static final String APPOINT_TESTS_TO_USER = "/WEB-INF/jsp/appoint_test_to_users.jsp";
+    private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
+
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
         ClientService clientService = serviceProvider.getClientService();
@@ -35,16 +35,16 @@ public class GoToAppointTestCommand implements Command {
 
 
         List<User> listOfUsers = new ArrayList<>();
+        String page = APPOINT_TESTS_TO_USER;
         try {
-
             listOfUsers = clientService.showAllUsers();
         } catch (ServiceException e){
-            e.printStackTrace();
+            page = ERROR_PAGE;
             //todo log
         }
         request.setAttribute("user_list", listOfUsers);
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/appoint_test_to_users.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
         requestDispatcher.forward(request, response);
 
 //        List<BasicDescriptionTest> listOfQuestion= new ArrayList<>();

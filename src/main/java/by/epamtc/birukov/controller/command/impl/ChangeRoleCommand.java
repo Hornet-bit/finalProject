@@ -6,6 +6,7 @@ import by.epamtc.birukov.service.ClientService;
 import by.epamtc.birukov.service.ServiceException;
 import by.epamtc.birukov.service.ServiceProvider;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import java.io.IOException;
 public class ChangeRoleCommand implements Command {
     private static final String PARAM_LOGIN = "username";
     private static final String PAGE_LIST_OF_USERS = "/WEB-INF/jsp/list_of_users.jsp";
+    private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
 
@@ -23,7 +25,6 @@ public class ChangeRoleCommand implements Command {
 
         String changedUserLogin = request.getParameter(PARAM_LOGIN);
 
-        //todo не костыль ли?
         response.sendRedirect("controller?command=show_all_users");
 
 
@@ -31,7 +32,8 @@ public class ChangeRoleCommand implements Command {
         try {
             clientService.changeRole(changedUserLogin);
         } catch (ServiceException e){
-            e.printStackTrace();
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher(ERROR_PAGE);
+            requestDispatcher.forward(request, response);
         }
     }
 }

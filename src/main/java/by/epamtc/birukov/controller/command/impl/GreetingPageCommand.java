@@ -12,13 +12,9 @@ public class GreetingPageCommand implements Command {
     private final static String GREETING_PAGE = "WEB-INF/jsp/greeting.jsp";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            request.getRequestDispatcher(GREETING_PAGE).forward(request, response);
-        } catch (ServletException e){
-            e.printStackTrace();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        request.getRequestDispatcher(GREETING_PAGE).forward(request, response);
+
     }
 }

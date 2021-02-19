@@ -10,6 +10,8 @@ import java.io.IOException;
 
 public class GoToCreateSubject implements Command {
     private final static String CREATE_SUBJECT_PAGE = "WEB-INF/jsp/create_subject.jsp";
+    private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
 

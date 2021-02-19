@@ -21,7 +21,5 @@ public class ServiceValidator {
             return false;
         }
         return true;
-
     }
-
 }

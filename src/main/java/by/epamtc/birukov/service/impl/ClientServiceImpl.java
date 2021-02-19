@@ -5,11 +5,13 @@ import by.epamtc.birukov.dao.DAOProvider;
 import by.epamtc.birukov.dao.UserDAO;
 import by.epamtc.birukov.entity.AuthenticationData;
 import by.epamtc.birukov.entity.User;
+import by.epamtc.birukov.entity.UserAcademicPerformance;
 import by.epamtc.birukov.entity.UserRegForm;
 import by.epamtc.birukov.service.ClientService;
 import by.epamtc.birukov.service.ServiceException;
 import by.epamtc.birukov.service.validator.ServiceValidator;
 
+import javax.servlet.http.Part;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,9 +103,44 @@ public class ClientServiceImpl implements ClientService {
 
         try {
             userDAO.changeRole(login);
-        } catch (DAOException e){
+        } catch (DAOException e) {
             e.printStackTrace();
+            throw new ServiceException(e);
         }
     }
+
+    @Override
+    public String uploadAvatar(AuthenticationData user, Part filePart) throws ServiceException {
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        UserDAO userDAO = daoProvider.getUserDAO();
+
+        String locationImage;
+
+        try {
+            locationImage = userDAO.uploadAvatar(user, filePart);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+
+        return locationImage;
+    }
+
+    @Override
+    public List<UserAcademicPerformance> showJournal(String testName) throws ServiceException {
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        UserDAO userDAO = daoProvider.getUserDAO();
+
+       List<UserAcademicPerformance> journal = null;
+
+        try {
+            journal = userDAO.showJournal(testName);
+        } catch (DAOException e){
+            e.printStackTrace();
+            throw new ServiceException(e);
+        }
+
+        return journal;
+    }
+
 
 }

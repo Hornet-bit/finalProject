@@ -4,6 +4,7 @@ import by.epamtc.birukov.controller.ParserQuestion;
 import by.epamtc.birukov.controller.command.Command;
 import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.entity.Test;
+import by.epamtc.birukov.service.ServiceException;
 import by.epamtc.birukov.service.ServiceProvider;
 import by.epamtc.birukov.service.TestService;
 
@@ -18,18 +19,11 @@ public class CreateTestCommand implements Command {
 
     private static final String PAGE_FILING_QUESTIONS = "/WEB-INF/jsp/includs/question.jsp";
     private static final String PAGE_TEST_IS_CREATED = "/WEB-INF/jsp/test_is_created.jsp";
+    private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-//        String count = request.getParameter("count_of_question");
-//        request.setAttribute("count", count);
-//        Part filePart = request.getPart("image");
-//        String fn = filePart.getName();
-//        System.out.println("Имя файла "+fn);
-////        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
-//        InputStream fileContent = filePart.getInputStream();
-//        System.out.println(fileContent.read());
 
         Test test = new Test();
 
@@ -39,21 +33,16 @@ public class CreateTestCommand implements Command {
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
         TestService testService = serviceProvider.getTestService();
 
+        String page = PAGE_TEST_IS_CREATED;
         try {
-
-
             testService.createTest(test);
-        } catch (DAOException e){
-            e.printStackTrace();
-            //todo log
+        } catch (ServiceException e){
+
+            page = ERROR_PAGE;
         }
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(PAGE_TEST_IS_CREATED);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
         requestDispatcher.forward(request, response);
 
-
-
-//        RequestDispatcher dispatcher = request.getRequestDispatcher(PAGE_FILING_QUESTIONS);
-//        dispatcher.forward(request, response);
     }
 }

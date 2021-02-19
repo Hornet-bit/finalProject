@@ -19,21 +19,23 @@ public class ShowAllUsersCommand implements Command {
 
     private static final String ATTRIBUTE_NAME_USER_LIST = "user_list";
     private static final String PAGE_LIST_OF_USERS = "/WEB-INF/jsp/list_of_users.jsp";
+    private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
         ClientService clientService = serviceProvider.getClientService();
 
         List<User> listOfUsers = new ArrayList<>();
+        String page = PAGE_LIST_OF_USERS;
         try {
             listOfUsers = clientService.showAllUsers();
         } catch (ServiceException e){
-            //todo log
-            e.printStackTrace();
+            page = ERROR_PAGE;
         }
+
         request.setAttribute(ATTRIBUTE_NAME_USER_LIST, listOfUsers);
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(PAGE_LIST_OF_USERS);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
         requestDispatcher.forward(request, response);
     }
 }

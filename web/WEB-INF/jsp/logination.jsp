@@ -44,7 +44,17 @@
         <input type="submit" class="btn btn-outline-info" value="Login">
     </form>
 </main>
-<c:out value="${error}"/>
+</div>
+
+<style>
+    .error{
+        color: red;
+    }
+</style>
+
+<div class="error">
+    <c:out value="${error}"/>
+</div>
 </body>
 
 </html>

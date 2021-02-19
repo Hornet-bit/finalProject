@@ -10,10 +10,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class CreateQuestionCommand implements Command {
-
+//todo что я тут делал...
     private final static String PARAM_OF_RESPONSE = "text/html;charset=UTF-8";
 
     private final static String PAGE_CREATE_TEST = "/WEB-INF/jsp/create_test.jsp";
+    private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

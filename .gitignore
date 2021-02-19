@@ -2,5 +2,5 @@
 /out/
 /TestSystemFinish.iml
 /target/
-
+.gitignore
 /web/img/

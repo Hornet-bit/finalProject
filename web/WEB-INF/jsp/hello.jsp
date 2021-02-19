@@ -1,8 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%--<%@include file="header.jsp" %>--%>
 <!doctype html>
 <html lang="en">
+
 <head>
     <c:set var="page" scope="session" value="hello.jsp"/>
     <fmt:setLocale value="${sessionScope.local}"/>
@@ -11,7 +13,7 @@
     <fmt:message bundle="${loc}" key="hello.button.look.appoint.tests" var="look_appoint_tests"/>
 
     <c:import url="header.jsp"/>
-
+<%--    <jsp:include page="header.jsp" flush="true"/>--%>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -44,6 +46,10 @@
 <c:if test="${user.getUserRole() eq 'admin'}">
     <c:import url="admin_actions.jsp"/>
 </c:if>
+<%--<script>--%>
+<%--    window.opener.location.href = "controller?command=go_to_hallo_page";--%>
+<%--    window.close();--%>
+<%--</script>--%>
 </body>
 
 </html>

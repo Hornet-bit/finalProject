@@ -5,6 +5,7 @@ import by.epamtc.birukov.entity.UserRegForm;
 import by.epamtc.birukov.service.ClientService;
 import by.epamtc.birukov.service.ServiceException;
 import by.epamtc.birukov.service.ServiceProvider;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,8 +19,10 @@ public class CreateNewUserCommand implements Command {
     private static final String ATTRIBUTE_NAME_PASSWORD = "password";
 
     private static final String PAGE_GREETING = "/WEB-INF/jsp/greeting.jsp";
+    private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
+
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         response.setContentType("text/html");
 
@@ -33,20 +36,17 @@ public class CreateNewUserCommand implements Command {
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
         ClientService clientService = serviceProvider.getClientService();
 
+        String page = PAGE_GREETING;
         try {
 
             clientService.registration(user);
 
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher(PAGE_GREETING);
-            requestDispatcher.forward(request, response);
-
-        } catch (ServletException e){
-            e.printStackTrace();
-        } catch (IOException e){
-            e.printStackTrace();
-        } catch (ServiceException e){
-            e.printStackTrace();
-            //todo log4j
+        } catch (ServiceException e) {
+            page = ERROR_PAGE;
         }
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
+        requestDispatcher.forward(request, response);
+
     }
 }

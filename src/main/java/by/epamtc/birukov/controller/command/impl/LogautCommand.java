@@ -15,7 +15,7 @@ public class LogautCommand implements Command {
     private static final String PAGE_LOGINATION = "/WEB-INF/jsp/logination.jsp";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 
         HttpSession httpSession = request.getSession();
         httpSession.invalidate();

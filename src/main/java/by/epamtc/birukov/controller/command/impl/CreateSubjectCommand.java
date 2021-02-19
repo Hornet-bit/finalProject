@@ -3,6 +3,7 @@ package by.epamtc.birukov.controller.command.impl;
 import by.epamtc.birukov.controller.command.Command;
 import by.epamtc.birukov.dao.DAOException;
 import by.epamtc.birukov.entity.Subject;
+import by.epamtc.birukov.service.ServiceException;
 import by.epamtc.birukov.service.ServiceProvider;
 import by.epamtc.birukov.service.TestService;
 
@@ -14,6 +15,8 @@ import java.io.IOException;
 public class CreateSubjectCommand implements Command {
     private final static String PARAM_SUBJ_NAME = "name";
     private final static String PARAM_DESCRIPTION = "description";
+    private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
+    //todo нет форварда
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
 
@@ -24,7 +27,13 @@ public class CreateSubjectCommand implements Command {
         ServiceProvider serviceProvider = ServiceProvider.getInstance();
         TestService testService = serviceProvider.getTestService();
 
-        testService.createSubject(subject);
+        String page = null;
+        try {
+            testService.createSubject(subject);
+        } catch (ServiceException e){
+            page = ERROR_PAGE;
+        }
+
 
 
     }

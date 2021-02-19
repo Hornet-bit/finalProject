@@ -67,6 +67,7 @@ public class SQLTestDAO implements TestDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DAOException(e);
             //todo log & DAOExep
         }
     }
@@ -222,6 +223,7 @@ public class SQLTestDAO implements TestDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DAOException(e);
             //todo log
         } finally {
             pool.releaseConnection(connection);
@@ -367,10 +369,13 @@ public class SQLTestDAO implements TestDAO {
                 preparedStatement.executeUpdate();
             }
 
-
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DAOException(e);
             //todo log
+
+        }
+        finally {
             pool.releaseConnection(connection);
         }
     }
@@ -427,13 +432,14 @@ public class SQLTestDAO implements TestDAO {
             e.printStackTrace();
         } catch (DAOException e) {
             e.printStackTrace();
+        } finally {
+            pool.releaseConnection(connection);
         }
 
         return bdt;
     }
 
     private List<Integer> getIdTestsByUserId(int idUser) {
-
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -485,6 +491,8 @@ public class SQLTestDAO implements TestDAO {
             e.printStackTrace();
         } catch (DAOException e) {
             e.printStackTrace();
+        } finally {
+            pool.releaseConnection(connection);
         }
         return idUser;
 
@@ -508,6 +516,7 @@ public class SQLTestDAO implements TestDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DAOException(e);
         } finally {
             pool.releaseConnection(connection);
         }
@@ -536,7 +545,12 @@ public class SQLTestDAO implements TestDAO {
                 subjects.add(subject);
             }
         } catch (SQLException e) {
+
             e.printStackTrace();
+            throw new DAOException(e);
+
+        } finally {
+            pool.releaseConnection(connection);
         }
         return subjects;
     }
@@ -569,8 +583,7 @@ public class SQLTestDAO implements TestDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (DAOException e) {
-            e.printStackTrace();
+            throw new DAOException(e);
         }
 
         return null;
@@ -579,7 +592,7 @@ public class SQLTestDAO implements TestDAO {
     private static final String DELETE_RECORD_FROM_RUN_TESTS = "DELETE FROM run_tests as r WHERE r.id_test = ? AND r.id_user = ?";
 
     @Override
-    public void deleteAppointTest(int id_test, int id_user) {
+    public void deleteAppointTest(int id_test, int id_user) throws DAOException{
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -595,8 +608,7 @@ public class SQLTestDAO implements TestDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (DAOException e) {
-            e.printStackTrace();
+            throw new DAOException(e);
         }
     }
 
@@ -604,7 +616,7 @@ public class SQLTestDAO implements TestDAO {
     private static final String INSERT_INTO_TABLE_USERS_RESULTS = "INSERT INTO users_result (users_id, result_tests_id) values (?,?)";
 
     @Override
-    public void putMarkInJournal(int idUser, int idTest, int mark) {
+    public void putMarkInJournal(int idUser, int idTest, int mark) throws DAOException{
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedKey = null;
@@ -634,8 +646,7 @@ public class SQLTestDAO implements TestDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (DAOException e) {
-            e.printStackTrace();
+            throw new DAOException(e);
         }
 
     }

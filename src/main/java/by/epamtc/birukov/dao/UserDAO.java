@@ -1,10 +1,9 @@
 package by.epamtc.birukov.dao;
 
-import by.epamtc.birukov.entity.AuthenticationData;
-import by.epamtc.birukov.entity.BasicDescriptionTest;
-import by.epamtc.birukov.entity.User;
-import by.epamtc.birukov.entity.UserRegForm;
+import by.epamtc.birukov.entity.*;
+import by.epamtc.birukov.service.ServiceException;
 
+import javax.servlet.http.Part;
 import java.util.List;
 
 public interface UserDAO {
@@ -19,6 +18,10 @@ public interface UserDAO {
     List<User> showAllUsers() throws DAOException;
 
     void changeRole(String login) throws DAOException;
+
+    String  uploadAvatar(AuthenticationData user, Part filePart) throws DAOException;
+
+    List<UserAcademicPerformance> showJournal(String testName) throws DAOException;
 
 
 }

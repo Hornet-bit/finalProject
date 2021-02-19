@@ -9,15 +9,7 @@ import java.io.IOException;
 
 public class GoToRegistrationCommand implements Command {
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
-        try {
-
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             request.getRequestDispatcher("WEB-INF/jsp/registration.jsp").forward(request, response);
-        }
-        catch (ServletException e){
-            e.printStackTrace();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
     }
 }

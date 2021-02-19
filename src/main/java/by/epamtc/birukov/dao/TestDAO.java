@@ -30,10 +30,10 @@ public interface TestDAO {
 
     List<Subject> showSubjects() throws DAOException;
 
-    public List<BasicDescriptionTest> getTestsOfSubject(String subjectName) throws DAOException;
+    List<BasicDescriptionTest> getTestsOfSubject(String subjectName) throws DAOException;
 
-    void deleteAppointTest(int id_test, int id_user);
+    void deleteAppointTest(int id_test, int id_user) throws DAOException;
 
-    public void putMarkInJournal(int idUser, int idTest, int mark);
+    void putMarkInJournal(int idUser, int idTest, int mark) throws DAOException;
 
 }

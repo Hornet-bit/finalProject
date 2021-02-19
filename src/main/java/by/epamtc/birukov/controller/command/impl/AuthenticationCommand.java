@@ -24,7 +24,7 @@ public class AuthenticationCommand implements Command {
     private static final String  PARAMETER_PASSWORD = "password";
 
     private static final String LOGIN_PAGE = "/WEB-INF/jsp/logination.jsp";
-    private static final String ERROR_PAGE = "/error.jsp";
+    private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
     private static final String HELLO_PAGE = "/WEB-INF/jsp/hello.jsp";
 
     @Override
@@ -50,20 +50,19 @@ public class AuthenticationCommand implements Command {
                 request.setAttribute("error", "wrong login or password");
                 page = LOGIN_PAGE;
 
-
             } else {
 
 
-//                authenticationData.setUsername();
-//                request.setAttribute("user", user);
                 page = HELLO_PAGE;
                 HttpSession session = request.getSession();
                 session.setAttribute("user", authenticationData);
                 session.setAttribute("login", authenticationData.getUsername());
                 session.setAttribute("role", authenticationData.getUserRole());
+
+                session.setAttribute("pa", "img/avatars/ingv_avatar.jpeg");
             }
         } catch (ServiceException e){
-//            page = ERROR_PAGE;
+            page = ERROR_PAGE;
             e.printStackTrace();
 
 //            log.debug(e);
