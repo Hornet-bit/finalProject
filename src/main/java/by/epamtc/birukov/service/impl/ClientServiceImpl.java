@@ -30,15 +30,12 @@ public class ClientServiceImpl implements ClientService {
 
         AuthenticationData authenticationData = null;
 
-
         try {
             authenticationData = userDAO.authentication(login, password);
-
         } catch (DAOException e) {
             throw new ServiceException(e);
             //todo log
         }
-
         return authenticationData;
     }
 
@@ -49,6 +46,9 @@ public class ClientServiceImpl implements ClientService {
         DAOProvider daoProvider = DAOProvider.getInstance();
         UserDAO userDAO = daoProvider.getUserDAO();
 
+        if(!ServiceValidator.isDataCorrect(user.getUsername(), user.getPassword())){
+            return false;
+        }
 
         try {
             return userDAO.registration(user);
@@ -56,6 +56,18 @@ public class ClientServiceImpl implements ClientService {
             throw new ServiceException(e);
         }
 
+    }
+
+    @Override
+    public boolean checkAvailableUsernameAndEmail(UserRegForm user) throws ServiceException {
+        DAOProvider daoProvider = DAOProvider.getInstance();
+        UserDAO userDAO = daoProvider.getUserDAO();
+
+        try {
+            return userDAO.checkAvailableUsernameAndEmail(user);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
     }
 
     @Override

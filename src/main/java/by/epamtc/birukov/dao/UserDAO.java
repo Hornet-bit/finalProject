@@ -23,5 +23,7 @@ public interface UserDAO {
 
     List<UserAcademicPerformance> showJournal(String testName) throws DAOException;
 
+    boolean checkAvailableUsernameAndEmail(UserRegForm user) throws DAOException;
+
 
 }

@@ -37,7 +37,6 @@ public class SQLUserDAO implements UserDAO {
         ResultSet resultSet = null;
         AuthenticationData authenticationData = null;
 
-
         try {
             connection = pool.getConnection();
 
@@ -65,11 +64,9 @@ public class SQLUserDAO implements UserDAO {
             e.printStackTrace();
             throw new DAOException(e);
             //todo log4j
-
         } finally {
             pool.releaseConnection(connection);
         }
-
         return authenticationData;
     }
 
@@ -86,7 +83,6 @@ public class SQLUserDAO implements UserDAO {
 
             connection.setAutoCommit(false);
 
-
             preparedStatement = connection.prepareStatement(INSERT_REGISTRATION_FORM);
 
             preparedStatement.setString(1, user.getEmail());
@@ -96,7 +92,6 @@ public class SQLUserDAO implements UserDAO {
 
             preparedStatement.executeUpdate();
             connection.setAutoCommit(true);
-
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -122,7 +117,6 @@ public class SQLUserDAO implements UserDAO {
 //        ResultSet resultSet = null;
 //
 //        connection = pool.getConnection();
-//
 //
 //        User user = null;
 //        try {
@@ -163,6 +157,7 @@ public class SQLUserDAO implements UserDAO {
 
         connection = pool.getConnection();
         List<User> listOfUsers = new ArrayList<>();
+
 
         try {
 
@@ -355,6 +350,33 @@ public class SQLUserDAO implements UserDAO {
             throw new DAOException(e);
         }
         return null;
+    }
+
+    private static final String CHECK_EMAIL = "SELECT ? IN (SELECT email FROM testing.users)";
+    private static final String CHECK_NICK = "SELECT ? IN (SELECT username FROM testing.users)";
+    @Override
+    public boolean checkAvailableUsernameAndEmail(UserRegForm user) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        connection = pool.getConnection();
+
+        try {
+            preparedStatement = connection.prepareStatement(CHECK_NICK);
+            preparedStatement.setString(1, user.getUsername());
+            resultSet = preparedStatement.executeQuery();
+            int result = 1;
+
+            while (resultSet.next()) {
+                result = resultSet.getInt(1);
+            }
+            return result != 1;
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw new DAOException(e);
+        }
+
+
     }
 
 

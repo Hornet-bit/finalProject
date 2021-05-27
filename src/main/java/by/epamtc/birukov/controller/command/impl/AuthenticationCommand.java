@@ -51,34 +51,22 @@ public class AuthenticationCommand implements Command {
                 page = LOGIN_PAGE;
 
             } else {
-
-
                 page = HELLO_PAGE;
                 HttpSession session = request.getSession();
                 session.setAttribute("user", authenticationData);
                 session.setAttribute("login", authenticationData.getUsername());
                 session.setAttribute("role", authenticationData.getUserRole());
-
                 session.setAttribute("pa", "img/avatars/ingv_avatar.jpeg");
             }
         } catch (ServiceException e){
             page = ERROR_PAGE;
             e.printStackTrace();
-
 //            log.debug(e);
-
-
-
             //todo log4j
         } finally {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
                 requestDispatcher.forward(request, response);
 //                log.debug(e);
-//                log.debug(e);
-
         }
-
-
-
     }
 }

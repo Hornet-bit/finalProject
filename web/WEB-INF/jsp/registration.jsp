@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
 
 <head>
@@ -33,16 +34,26 @@
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Nickname</label>
-            <input type="text" class="form-control" id="exampleInputEmail2" name="username" aria-describedby="emailHelp" placeholder="Enter nickname" required>
+            <input type="text" class="form-control" id="exampleInputEmail2" name="username" aria-describedby="emailHelp" placeholder="Enter nickname" required minlength="3" maxlength="29">
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password" required>
+            <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password" required minlength="3" maxlength="29">
         </div>
         <input type="submit" class="btn btn-outline-info" value="Registration">
     </form>
 
 </main>
+<style>
+    .error{
+        color: red;
+    }
+</style>
+
+<div class="error">
+    <c:out value="${error}"/>
+</div>
+
 </body>
 
 </html>

@@ -20,6 +20,8 @@ public class CreateNewUserCommand implements Command {
 
     private static final String PAGE_GREETING = "/WEB-INF/jsp/greeting.jsp";
     private static final String ERROR_PAGE = "/WEB-INF/error.jsp";
+    private static final String REG_PAGE = "/WEB-INF/jsp/registration.jsp";
+
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,9 +40,13 @@ public class CreateNewUserCommand implements Command {
 
         String page = PAGE_GREETING;
         try {
-
-            clientService.registration(user);
-
+            if(!clientService.checkAvailableUsernameAndEmail(user)){
+                   page = REG_PAGE;
+                   request.setAttribute("error", "this username not unique");
+            }
+            else {
+                clientService.registration(user);
+            }
         } catch (ServiceException e) {
             page = ERROR_PAGE;
         }

@@ -16,7 +16,6 @@ import java.io.IOException;
 public class Controller extends HttpServlet {
     private static final String PARAMETER_NAME_COMMAND = "command";
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         process(request, response);
     }
 
